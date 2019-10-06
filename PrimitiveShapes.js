@@ -18,7 +18,7 @@ class LineShape extends Component
 
 class SquareShape extends Component
 {
-    constructor()
+    constructor(offset)
     {
         super();
     }
@@ -29,6 +29,11 @@ class SquareShape extends Component
         var objScale = this.gameObject.transform.scale;
 
         this.gameObject.ctx.fillRect(objPos.x, objPos.y,  objScale.x, objScale.x);
+    }
+
+    print = function()
+    {
+        console.log('SquareShape component attached to: ' + this.gameObject.id);
     }
 }
 

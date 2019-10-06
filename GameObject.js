@@ -22,10 +22,37 @@ class GameObject
         this.ctx = ctx;
     }
 
-    addComponent = function(addedComponent)
+    addComponent = function(addedComp)
     {
-        this.components.push(addedComponent);
-        addedComponent.gameObject = this;
+        this.components.push(addedComp);
+        addedComp.gameObject = this;
+    }
+
+    removeComponentOfType = function(removeType)
+    {
+        var index = -1;
+
+        for(var i = 0; i < this.components.length; i++)
+        {
+            var type1 = this.components[i].constructor;
+            var type2 = removeType;
+            if(type1 == type2)
+                index = i;
+        }
+
+        if (index > -1)
+            this.components.slice(index, 1);
+    }
+
+    getComponentOfType = function(type)
+    {
+        for(var i = 0; i < this.components.length; i++)
+        {
+            var type1 = this.components[i].constructor;
+            var type2 = type;
+            if(type1 == type2)
+                return this.components[i];
+        }
     }
 
     start = function() 
@@ -49,12 +76,6 @@ class GameObject
         }
     }
 
-    print = function()
-    {
-        //console.log('GameObject: ' + this.id + "\n" + 
-        //'Position: ' + this.pos.x + ' , ' + this.pos.y);
-    }
-
     static find(id)
     {
         var canvaces = SceneManager.runningScene.canvaces;
@@ -69,19 +90,3 @@ class GameObject
         }
     }
 }
-
-    /*
-    // Draw Game Object
-    draw = function(ctx)
-    {
-        //PrimitiveShapes.drawRect(ctx, this.pos, new Vector2D(50, 50));
-        //PrimitiveShapes.drawCircle(ctx, this.pos, 30, 0, 2.0 * Math.PI);
-        //PrimitiveShapes.drawRect(ctx, this.pos, new Vector2D(50, 50));
-    }
-
-    // Update Game Object
-    update = function()
-    {
-        //Do nothing
-    }
-     */

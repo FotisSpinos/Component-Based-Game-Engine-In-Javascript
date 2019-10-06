@@ -56,4 +56,6 @@ class SquareCollider extends Collider
         this.pos = pos;
         this.size = size;
     }
+
+    
 }

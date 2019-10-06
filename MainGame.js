@@ -15,6 +15,9 @@ function startScene()
 
     var scene = new Scene('First scene', canvasCollection);
 
+    second.removeComponentOfType(SquareShape);
+    first.removeComponentOfType(SquareShape);
+
     var sceneManager = new SceneManager();
     sceneManager.addScene(scene);
     sceneManager.loadScene(scene.name);
