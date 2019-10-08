@@ -14,12 +14,12 @@ class GameObject
         this.collider;
 
         this.start();
-        this.ctx;
+        this.canvas;
     }
 
-    set setContext(ctx)
+    set setCanvas(canvasObj)
     {
-        this.ctx = ctx;
+        this.canvas = canvasObj;
     }
 
     addComponent = function(addedComp)

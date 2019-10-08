@@ -45,6 +45,30 @@ class Collision
 
         //if()
     }
+
+    static check = function(collider1, collider2)
+    {
+        var type1 = defineCollisionType(collider1);
+        var type2 = defineCollisionType(collider2);
+        /*
+        if(type1 == CircleCollider && type2 == CircleCollider)
+        {
+            return rectToRect(collider1, collider2);
+        }
+        else if(type1 == CircleCollider && type2 == CircleCollider)
+         */
+    }
+
+    static defineCollisionType(collisionObj)
+    {
+        switch(collider1.constructor())
+        {
+            case CircleCollider:
+                return CircleCollider;
+            case SquareCollider:
+                return SquareCollider;
+        }
+    }
 }
 
 class CircleCollider extends Collider

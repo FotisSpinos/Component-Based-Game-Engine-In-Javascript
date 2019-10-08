@@ -1,7 +1,7 @@
 class Canvas
 {
     // Set size using a vector 2D. X = width Y = Height
-    setSize(size)
+    setSize = function(size)
     {
         this.c.width = size.x;
         this.c.height = size.y;
@@ -9,7 +9,7 @@ class Canvas
 
     createCanvas(id, size)
     {
-        this.c = document.createElement("canvas");
+        this.c = document.createElement('canvas');
         this.c.id = id;
 
         this.setSize(size);
@@ -35,10 +35,10 @@ class Canvas
 
         this.ctx = this.c.getContext('2d'); 
 
-        
+        // Set the canvas
         for(var i = 0; i < drawObjs.length; i++)
         {
-            drawObjs[i].setContext = this.ctx;
+            drawObjs[i].setCanvas = this;
         }
     }
 
@@ -65,7 +65,6 @@ class Canvas
 
     clearCanvas = function()
     {
-        //Clear Canvas
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
     }
 
@@ -73,7 +72,6 @@ class Canvas
     {
         for(var i = 0; i < this.drawObjs.length; i++)
         {
-            //this.drawObjs[i].update();
             this.drawObjs[i].excecuteComponentBehaviour();
         }
     }
@@ -84,10 +82,9 @@ class Canvas
         {
             for(var y = 0; y < this.drawObjs.length; y++)
             {
-                if(x != y && 
-                    Collision.rectToRect(this.drawObjs[x].collider, this.drawObjs[y].collider))
+                if(x != y)
                 {
-                    this.drawObjs[x].onCollisionEnter(this.drawObjs[y]);
+                    //Collision.check(this.drawObjs[x].collider, this.drawObjs[y].collider);
                 }
             }
         }

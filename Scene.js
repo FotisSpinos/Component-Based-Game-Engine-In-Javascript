@@ -59,8 +59,6 @@ class Scene
         }
     }
 
-
-
     print = function()
     {
         console.log('Scene Print: ' + this.id);

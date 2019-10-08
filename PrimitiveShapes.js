@@ -9,6 +9,7 @@ class LineShape extends Component
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
+        var ctx = this.gameObject.canvas.ctx;
 
         ctx.moveTo(objPos.x, objPos.pos.y);
         ctx.lineTo(objPos.x + objScale.x, objPos.y + objScale.scale.y);
@@ -27,8 +28,9 @@ class SquareShape extends Component
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
+        var ctx = this.gameObject.canvas.ctx;
 
-        this.gameObject.ctx.fillRect(objPos.x, objPos.y,  objScale.x, objScale.x);
+        ctx.fillRect(objPos.x, objPos.y,  objScale.x, objScale.x);
     }
 
     print = function()
@@ -50,6 +52,7 @@ class CircleShape extends Component
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
+        var ctx = this.gameObject.canvas.ctx;
 
         ctx.beginPath();
         ctx.arc(objPos.x, objPos.y, objScale.x, this.startAng, this.endAng);
