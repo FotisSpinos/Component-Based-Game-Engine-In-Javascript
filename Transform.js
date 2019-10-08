@@ -6,4 +6,11 @@ class Transform extends Component
         this.pos = pos;
         this.scale = scale;
     }
+
+    print()
+    {
+        console.log('Transform component of: ' + this.gameObject.id + '\n' +
+         'pos: ' + this.pos + '\n' + 
+         'scale' + this.scale);
+    }
 }

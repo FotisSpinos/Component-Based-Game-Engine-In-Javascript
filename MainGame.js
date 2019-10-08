@@ -1,9 +1,12 @@
 var circleCollider2;
 var circleCollider1;
 
+var counter = 0;
+var second;
+
 function startScene()
 {
-    var second = new GameObject('atempt2', new Vector2D(50, 40), new Vector2D(20, 20));
+    second = new GameObject('atempt2', new Vector2D(80, 40), new Vector2D(20, 20));
     var first = new GameObject('atempt', new Vector2D(50, 45), new Vector2D(20, 25));
     var objCollection = [first, second];
 
@@ -15,8 +18,13 @@ function startScene()
 
     var scene = new Scene('First scene', canvasCollection);
 
-    second.removeComponentOfType(SquareShape);
-    first.removeComponentOfType(SquareShape);
+    second.removeComponent(SquareShape);
+    second.addComponent(new SquareShape());
+    second.getComponent(Transform).print();
+
+    
+    var cc = new CircleCollider(second.transform.pos, 20.0);
+    second.addComponent(cc);
 
     var sceneManager = new SceneManager();
     sceneManager.addScene(scene);
@@ -31,6 +39,9 @@ function start()
 
 function gameLoop()
 {
+    counter++;
+    second.transform.pos = second.transform.pos.addVec(new Vector2D(counter * 0.01, 0.0));
+
     var scene = SceneManager.runningScene;
     scene.clearCanvaces();
     scene.update();

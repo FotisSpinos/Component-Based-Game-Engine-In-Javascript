@@ -28,31 +28,31 @@ class GameObject
         addedComp.gameObject = this;
     }
 
-    removeComponentOfType = function(removeType)
+    removeComponent = function(type)
     {
         var index = -1;
 
         for(var i = 0; i < this.components.length; i++)
         {
-            var type1 = this.components[i].constructor;
-            var type2 = removeType;
-            if(type1 == type2)
+            if(type == this.components[i].constructor)
                 index = i;
         }
 
         if (index > -1)
-            this.components.slice(index, 1);
+        {
+            this.components.splice(index, 1);
+        }
     }
 
-    getComponentOfType = function(type)
+    getComponent = function(type)
     {
         for(var i = 0; i < this.components.length; i++)
         {
-            var type1 = this.components[i].constructor;
-            var type2 = type;
-            if(type1 == type2)
+            if(type == this.components[i].constructor)
                 return this.components[i];
         }
+
+        return -1;
     }
 
     start = function() 
