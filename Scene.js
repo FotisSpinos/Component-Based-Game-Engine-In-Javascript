@@ -7,6 +7,34 @@ class Scene
         this.canvaces = canvaces;
     }
 
+    removeCanvas = function(id)
+    {
+        for(var i = 0; i < this.canvaces.length; i++)
+        {
+            if(this.canvaces[i].id = id)
+            {
+                this.canvaces.splice(i, 1);
+                return;
+            }
+        }
+    }
+
+    addCanvas = function(canvasObj)
+    {
+        this.canvaces.push(canvasObj);
+    }
+
+    getCanvas = function(id)
+    {
+        for(var i = 0; i < this.canvaces.length; i++)
+        {
+            if(this.canvaces[i].id = id)
+            {
+                return this.canvaces[i];
+            }
+        }
+    }
+
     clearCanvaces = function()
     {
         for(var i = 0; i < this.canvaces.length; i++)
@@ -30,6 +58,8 @@ class Scene
             this.canvaces[i].collisionCheck();
         }
     }
+
+
 
     print = function()
     {

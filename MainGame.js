@@ -21,7 +21,6 @@ function startScene()
     second.removeComponent(SquareShape);
     second.addComponent(new SquareShape());
     second.getComponent(Transform).print();
-
     
     var cc = new CircleCollider(second.transform.pos, 20.0);
     second.addComponent(cc);

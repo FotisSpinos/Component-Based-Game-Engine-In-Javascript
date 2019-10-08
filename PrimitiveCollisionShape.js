@@ -13,10 +13,6 @@ class Collider extends Component
     }
 }
 
-//make a physical world object
-//everytime we add a collider component we make a copy of all colliders there
-//on each update we can compare each collider with each other to see if a collision occured 
-
 class Collision
 {
     // Checks if a collision occurs between two circles has happened
@@ -61,7 +57,7 @@ class CircleCollider extends Collider
 
     behaviour()
     {
-
+        
     }
 }
 
