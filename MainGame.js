@@ -3,7 +3,7 @@ function loadEditor()
 {
     // Define Player Game Object
     var playerPos = new Vector2D(0, 0);
-    var playerSize = new Vector2D(180 , 1);
+    var playerSize = new Vector2D(180 , 15);
 
     playerPos.y = window.innerHeight - playerSize.y - 20;
     playerPos.x = window.innerWidth / 2 - playerSize.x / 2;
@@ -13,16 +13,19 @@ function loadEditor()
     // Add Components to player GO
     playerGameObject.addComponent(new SquareShape());
 
-
     var ballPos = new Vector2D(playerGameObject.transform.pos.x + playerGameObject.transform.scale.x / 2, 
         playerGameObject.transform.pos.y - 20);
         
     var ballGO = new GameObject('ball', ballPos, new Vector2D(20, 20));
     ballGO.addComponent(new CircleShape());
 
+    var img = new GameObject('image attempt', new Vector2D(20, 20), new Vector2D(20, 20))
+    var image = new Image("http://www.google.com/intl/en_com/images/logo_plain.png", 'Google')
+    img.addComponent(image);
+    img.addComponent(new MotionCharacter(0.1));
 
     // Define Objects to draw in the scene
-    var mainCanvasObjs = [playerGameObject, ballGO];
+    var mainCanvasObjs = [playerGameObject, ballGO, img];
 
     //Create Canvaces
     var mainCanvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), mainCanvasObjs);
@@ -33,7 +36,6 @@ function loadEditor()
     var sceneManager = new SceneManager();
     sceneManager.addScene(mainScene);
     sceneManager.loadScene(mainScene.name);
-
 }
 
 function start() 
@@ -51,29 +53,3 @@ function gameLoop()
 }
 
 start();
-
-//-------------TEST SCENE-------------------
-/*
-second = new GameObject('atempt2', new Vector2D(80, 40), new Vector2D(20, 20));
-    var first = new GameObject('atempt', new Vector2D(50, 45), new Vector2D(20, 25));
-    var objCollection = [first, second];
-
-    second.addComponent(new SquareShape());
-    first.addComponent(new SquareShape());
-
-    var canvas = new Canvas('canvasid', new Vector2D(200, 200), objCollection);
-    var canvasCollection = [canvas];
-
-    var scene = new Scene('First scene', canvasCollection);
-
-    second.removeComponent(SquareShape);
-    second.addComponent(new SquareShape());
-    second.getComponent(Transform).print();
-    
-    var cc = new CircleCollider(second.transform.pos, 20.0);
-    second.addComponent(cc);
-
-    var sceneManager = new SceneManager();
-    sceneManager.addScene(scene);
-    sceneManager.loadScene(scene.name);
-*/

@@ -19,7 +19,7 @@ class LineShape extends Component
 
 class SquareShape extends Component
 {
-    constructor(offset)
+    constructor()
     {
         super();
     }
@@ -30,7 +30,7 @@ class SquareShape extends Component
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
-        ctx.fillRect(objPos.x, objPos.y,  objScale.x, objScale.x);
+        ctx.fillRect(objPos.x, objPos.y, objScale.x, objScale.y);
     }
 
     print = function()
@@ -41,11 +41,12 @@ class SquareShape extends Component
 
 class CircleShape extends Component
 {
-    constructor()
+    constructor(radious)
     {
         super();
         this.startAng = 0;
         this.endAng = 360;
+        this.radious = radious;
     }
 
     behaviour()
@@ -55,7 +56,35 @@ class CircleShape extends Component
         var ctx = this.gameObject.canvas.ctx;
 
         ctx.beginPath();
-        ctx.arc(objPos.x, objPos.y, objScale.x, this.startAng, this.endAng);
+        ctx.arc(objPos.x, objPos.y, this.radious, this.startAng, this.endAng);
         ctx.stroke();
+    }
+}
+
+class ImageRect extends Component
+{    
+    static addImageToDocument(imageURL, id)
+    {
+        var img = document.createElement("img");
+        img.src = imageURL;
+        img.id = 'imageid';
+        
+        var body = document.getElementById("body");
+        body.appendChild(img);
+    }
+
+    constructor(img)
+    {
+        super();
+        this.img = img;
+    }
+
+    behaviour()
+    {
+        var objPos = this.gameObject.transform.pos; 
+        var objScale = this.gameObject.transform.scale;
+        var ctx = this.gameObject.canvas.ctx;
+
+        ctx.drawImage(this.img, 10, 10, 150, 180);
     }
 }

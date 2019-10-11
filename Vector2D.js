@@ -15,6 +15,12 @@ class Vector2D
             return Math.sqrt(sumSquareOfLengths);
     }
 
+    noramalize()
+    {
+        var magn = this.magnitude();        
+        return ( new Vector2D(this.x / magn, this.y / magn) );
+    }
+
 
     getUnitVector()
     {
@@ -58,7 +64,7 @@ class Vector2D
     // multiply x and y component of the vector with a number
     scaleVec(scale)
     {
-        var output = Vector2D.zero;
+        var output = this;
         output.x *= scale;
         output.y *= scale;
         
