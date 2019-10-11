@@ -22,7 +22,10 @@ function loadEditor()
     var img = new GameObject('image attempt', new Vector2D(20, 20), new Vector2D(20, 20))
     var image = new Image("http://www.google.com/intl/en_com/images/logo_plain.png", 'Google')
     img.addComponent(image);
-    img.addComponent(new MotionCharacter(0.1));
+
+    var firstMotion = new MotionCharacter(new Vector2D(1, 0), 1);
+    img.addComponent(firstMotion);
+    console.log(firstMotion.dir);
 
     // Define Objects to draw in the scene
     var mainCanvasObjs = [playerGameObject, ballGO, img];
