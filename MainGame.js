@@ -1,9 +1,57 @@
 let inpt = new Input();
-
 let axis = new Axis('test1', 68, 65, 0.2);
+
+let framerate = 10;
+let lastFrameTime = 0;
 
 function loadEditor()
 {
+    var box = new GameObject('box', new Vector2D(0.0, 0.0), new Vector2D(100.0, 100.0));
+    var ss = new SquareShape();
+    ss.color = 'red';
+    box.addComponent(ss);
+    box.addComponent(new MotionObject(new Vector2D(1, 1), 1));
+
+    goArray = [box];
+
+    var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
+    var canvasArray = [canvas];
+    
+    var mainScene = new Scene('Main Scene', canvasArray);
+    var sceneManager = new SceneManager();
+    sceneManager.addScene(mainScene);
+    sceneManager.loadScene(mainScene.name);
+
+}
+
+function start() 
+{
+    loadEditor();
+    gameLoop();
+}
+
+function gameLoop(timestamp)
+{
+
+    var scene = SceneManager.runningScene;
+
+    if(scene != null)
+    {
+        scene.clearCanvaces();
+        scene.update();
+        
+        lastFrameTime = timestamp;
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+window.onload =() =>
+{
+    start();
+}
+
+/*
     // Define Player Game Object
     var playerPos = new Vector2D(0, 0);
     var playerSize = new Vector2D(180 , 15);
@@ -43,28 +91,4 @@ function loadEditor()
     var sceneManager = new SceneManager();
     sceneManager.addScene(mainScene);
     sceneManager.loadScene(mainScene.name);
-}
-
-function start() 
-{
-    loadEditor();
-    gameLoop();
-}
-
-function gameLoop()
-{
-    //Test
-    console.log(Input.instance.keys);
-    axis.update();
-    //Test Ends
-
-    var scene = SceneManager.runningScene;
-    scene.clearCanvaces();
-    scene.update();
-    requestAnimationFrame(gameLoop);
-}
-
-window.onload =() =>
-{
-    start();
-}
+*/

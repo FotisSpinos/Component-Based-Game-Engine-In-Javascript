@@ -41,22 +41,20 @@ class Collision
     // Checks if a collision happens between a square and a circle
     static squareToCircle(rect1, circle)
     {
-        //var rectCentre = new Vector2D(rect1.pos.x + rect1.size.x / 2, rect1.pos.y + rect1.size.y / 2);
-
-        //if()
+        // Not Yet Implemented
     }
 
     static check = function(collider1, collider2)
     {
         var type1 = defineCollisionType(collider1);
         var type2 = defineCollisionType(collider2);
-        /*
+        
         if(type1 == CircleCollider && type2 == CircleCollider)
         {
-            return rectToRect(collider1, collider2);
+            return Collision.circleToCircle(collider1, collider2);
         }
-        else if(type1 == CircleCollider && type2 == CircleCollider)
-         */
+        
+         
     }
 
     static defineCollisionType(collisionObj)
@@ -81,7 +79,18 @@ class CircleCollider extends Collider
 
     behaviour()
     {
-        
+        var canvas = this.gameObject.canvas;
+
+        for(var i = 0; i < canvas.drawObjs.length; i++)
+        {
+            if(canvas.drawObjs[i] == this.gameObject)
+                continue;
+
+            var circleCollider = canvas.drawObjs[i].getComponent(CircleCollider);
+            if(circleCollider != null)
+                Collision.circleToCircle(this, circleCollider);
+            var squareCollider = canvas.drawObjs[i].getComponent(SquareCollider);
+        }
     }
 }
 
