@@ -1,8 +1,10 @@
-class LineShape extends Component
+class Text extends Component
 {
-    constructor()
+    constructor(text, font, color)
     {
         super();
+        this.color = color == null ? 'yellow' : color;
+        this.text = text;
     }
 
     behaviour()
@@ -10,6 +12,29 @@ class LineShape extends Component
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
+
+        ctx.fillStyle = this.color;
+
+        ctx.font = font;
+        ctx.fillText(text, objScale.x, objScale.y);
+    }
+}
+
+class LineShape extends Component
+{
+    constructor(color)
+    {
+        super();
+        this.color = color == null ? 'yellow' : color;
+    }
+
+    behaviour()
+    {
+        var objPos = this.gameObject.transform.pos; 
+        var objScale = this.gameObject.transform.scale;
+        var ctx = this.gameObject.canvas.ctx;
+
+        ctx.fillStyle = this.color;
 
         ctx.moveTo(objPos.x, objPos.pos.y);
         ctx.lineTo(objPos.x + objScale.x, objPos.y + objScale.scale.y);
@@ -19,17 +44,20 @@ class LineShape extends Component
 
 class SquareShape extends Component
 {
-    constructor()
+    constructor(color)
     {
         super();
+        this.color = color == null ? 'yellow' : color;
     }
 
     behaviour()
     {
+        // get Game Object variables
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
+        ctx.fillStyle = this.color;
         ctx.fillRect(objPos.x, objPos.y, objScale.x, objScale.y);
     }
 
@@ -46,7 +74,9 @@ class CircleShape extends Component
         super();
         this.startAng = 0;
         this.endAng = 360;
+
         this.radious = radious;
+        this.color = color == null ? 'yellow' : color;
     }
 
     behaviour()
@@ -54,6 +84,8 @@ class CircleShape extends Component
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
+
+        ctx.fillStyle = this.color;
 
         ctx.beginPath();
         ctx.arc(objPos.x, objPos.y, this.radious, this.startAng, this.endAng);

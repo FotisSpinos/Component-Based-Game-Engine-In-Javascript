@@ -70,23 +70,11 @@ class Canvas
 
     update = function()
     {
+        this.clearCanvas();
+        
         for(var i = 0; i < this.drawObjs.length; i++)
         {
             this.drawObjs[i].excecuteComponentBehaviour();
-        }
-    }
-
-    collisionCheck = function()
-    {
-        for(var x = 0; x < this.drawObjs.length; x++)
-        {
-            for(var y = 0; y < this.drawObjs.length; y++)
-            {
-                if(x != y)
-                {
-                    //Collision.check(this.drawObjs[x].collider, this.drawObjs[y].collider);
-                }
-            }
         }
     }
 }

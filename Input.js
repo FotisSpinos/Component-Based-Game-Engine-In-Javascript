@@ -1,6 +1,7 @@
 class Input
 {
     static instance;
+    static axis = [];
 
     constructor()
     {
@@ -8,6 +9,15 @@ class Input
         document.addEventListener('keydown', this.keyDown, false);
         document.addEventListener('keyup', this.keyUp, false);
         Input.instance = this;
+    }   
+    
+    getAxis(id)
+    {
+        for(var i = 0; i < axis.length; i++)
+        {
+            if(id == axis[i].id)
+                return axis[i];
+        }
     }
 
     keyDown = function(event) 

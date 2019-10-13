@@ -10,6 +10,8 @@ class Axis
 
         this.increaseFactor = 0;
         this.decreaseFactor = 0;
+        
+        Input.axis.push(this);
     }
 
     get axisValue()
@@ -40,14 +42,3 @@ class Axis
         console.log(this.axisValue);
     }
 }
-
-// make value parameter from -1 to 1 
-    // make parameter to represent the increase factor (from 0 to 1)
-    // make parameter to represent the decrease factor (from 0 to -1)
-    // This will help us culculate the axis value by doing (increase factor - decrease factor)
-    // make value to represent key to increase the value param
-    // make value to represent key to dincrease the value param
-    // make rate value to increase or decrease class
-
-    // correct increasing is pressed the value increases from 0 to 1 dinamically
-    // correct decreasing is pressed the value increases from 0 to 1 dinamically
