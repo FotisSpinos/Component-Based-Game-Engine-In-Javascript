@@ -1,3 +1,6 @@
+let inpt = new Input();
+
+let axis = new Axis('test1', 68, 65, 0.2);
 
 function loadEditor()
 {
@@ -23,7 +26,8 @@ function loadEditor()
     var image = new Image("http://www.google.com/intl/en_com/images/logo_plain.png", 'Google')
     img.addComponent(image);
 
-    var firstMotion = new MotionCharacter(new Vector2D(1, 0), 1);
+    var firstMotion = new MotionObject(new Vector2D(0, 0), 6.0);
+    firstMotion.normalizeDir(new Vector2D(1, 0));
     img.addComponent(firstMotion);
     console.log(firstMotion.dir);
 
@@ -49,10 +53,18 @@ function start()
 
 function gameLoop()
 {
+    //Test
+    console.log(Input.instance.keys);
+    axis.update();
+    //Test Ends
+
     var scene = SceneManager.runningScene;
     scene.clearCanvaces();
     scene.update();
     requestAnimationFrame(gameLoop);
 }
 
-start();
+window.onload =() =>
+{
+    start();
+}

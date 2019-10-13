@@ -85,6 +85,6 @@ class ImageRect extends Component
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
-        ctx.drawImage(this.img, 10, 10, 150, 180);
+        ctx.drawImage(this.img, objPos.x, objPos.y, objScale.x, objScale.y);
     }
 }
