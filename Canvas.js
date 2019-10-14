@@ -69,12 +69,20 @@ class Canvas
     }
 
     update = function()
-    {
-        this.clearCanvas();
-        
+    {   
         for(var i = 0; i < this.drawObjs.length; i++)
         {
-            this.drawObjs[i].excecuteComponentBehaviour();
+            this.drawObjs[i].updateComponents();
+        }
+    }
+
+    render = function()
+    {
+        this.clearCanvas();
+
+        for(var i = 0; i < this.drawObjs.length; i++)
+        {
+            this.drawObjs[i].renderComponents();
         }
     }
 }

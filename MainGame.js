@@ -6,11 +6,9 @@ let lastFrameTime = 0;
 
 function loadEditor()
 {
-    var box = new GameObject('box', new Vector2D(0.0, 0.0), new Vector2D(100.0, 100.0));
-    var ss = new SquareShape();
-    ss.color = 'red';
-    box.addComponent(ss);
-    box.addComponent(new MotionObject(new Vector2D(1, 1), 1));
+    var box = new GameObject('box', new Vector2D(20.0, 20.0), new Vector2D(100.0, 100.0));
+    var img = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png", 'Google');
+    box.addComponent(img);
 
     goArray = [box];
 
@@ -21,7 +19,6 @@ function loadEditor()
     var sceneManager = new SceneManager();
     sceneManager.addScene(mainScene);
     sceneManager.loadScene(mainScene.name);
-
 }
 
 function start() 
@@ -32,13 +29,13 @@ function start()
 
 function gameLoop(timestamp)
 {
-
     var scene = SceneManager.runningScene;
 
     if(scene != null)
     {
         scene.clearCanvaces();
         scene.update();
+        scene.render();
         
         lastFrameTime = timestamp;
     }

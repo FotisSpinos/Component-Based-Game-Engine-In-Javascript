@@ -7,7 +7,7 @@ class Collider extends Component
         this.active = true;
     }
 
-    behaviour()
+    update()
     {
         
     }
@@ -77,7 +77,7 @@ class CircleCollider extends Collider
         this.radious = radious;
     }
 
-    behaviour()
+    update()
     {
         var canvas = this.gameObject.canvas;
 
@@ -103,7 +103,7 @@ class SquareCollider extends Collider
         this.size = size;
     }
 
-    behaviour()
+    update()
     {
         
     }

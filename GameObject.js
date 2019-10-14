@@ -83,16 +83,28 @@ class GameObject
     }
 
     // Excecuted every component behaviour
-    excecuteComponentBehaviour = function()
+    updateComponents = function()
     {
         if(this.components.legnth == 0)
             return;
 
         for(var i = 0; i < this.components.length; i++)
         {
-            this.components[i].behaviour();
+            this.components[i].update();
         }
     }
+
+    // Excecuted every component behaviour
+    renderComponents = function()
+    {
+        if(this.components.legnth == 0)
+            return;
+
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].render();
+        }
+    }    
 
     // Finds a game object in the scene from it's id
     static find(id)
