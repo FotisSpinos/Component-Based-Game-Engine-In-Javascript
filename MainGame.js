@@ -6,13 +6,15 @@ let lastFrameTime = 0;
 
 function loadEditor()
 {
-    var box = new GameObject('box', new Vector2D(0.0, 0.0), new Vector2D(100.0, 100.0));
-    var ss = new SquareShape();
-    ss.color = 'red';
-    box.addComponent(ss);
-    box.addComponent(new MotionObject(new Vector2D(1, 1), 1));
+    let obj1 = new GameObject('box1', new Vector2D(20.0, 20.0), new Vector2D(50.0, 50.0));
+    obj1.addComponent(new SquareShape(0));
+    obj1.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
 
-    goArray = [box];
+    let obj2 = new GameObject('box2', new Vector2D(69.0, 20.0), new Vector2D(50.0, 50.0));
+    obj2.addComponent(new SquareShape(0));
+    obj2.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
+
+    goArray = [obj1, obj2];
 
     var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
     var canvasArray = [canvas];
@@ -21,7 +23,6 @@ function loadEditor()
     var sceneManager = new SceneManager();
     sceneManager.addScene(mainScene);
     sceneManager.loadScene(mainScene.name);
-
 }
 
 function start() 
@@ -32,13 +33,13 @@ function start()
 
 function gameLoop(timestamp)
 {
-
     var scene = SceneManager.runningScene;
 
     if(scene != null)
     {
         scene.clearCanvaces();
         scene.update();
+        scene.render();
         
         lastFrameTime = timestamp;
     }

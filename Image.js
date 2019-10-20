@@ -17,12 +17,17 @@ class Image extends Component
         this.img.id = this.id;
     }
 
-    behaviour()
+    render()
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
         ctx.drawImage(this.img, objPos.x, objPos.y, objScale.x, objScale.y);
+    }
+
+    update()
+    {
+        
     }
 }

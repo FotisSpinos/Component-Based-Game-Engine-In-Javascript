@@ -7,7 +7,7 @@ class Text extends Component
         this.text = text;
     }
 
-    behaviour()
+    render()
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
@@ -28,7 +28,7 @@ class LineShape extends Component
         this.color = color == null ? 'yellow' : color;
     }
 
-    behaviour()
+    render()
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
@@ -48,9 +48,10 @@ class SquareShape extends Component
     {
         super();
         this.color = color == null ? 'yellow' : color;
+        
     }
 
-    behaviour()
+    render()
     {
         // get Game Object variables
         var objPos = this.gameObject.transform.pos; 
@@ -69,7 +70,7 @@ class SquareShape extends Component
 
 class CircleShape extends Component
 {
-    constructor(radious)
+    constructor(radious, color)
     {
         super();
         this.startAng = 0;
@@ -79,7 +80,7 @@ class CircleShape extends Component
         this.color = color == null ? 'yellow' : color;
     }
 
-    behaviour()
+    render()
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;
@@ -111,7 +112,7 @@ class ImageRect extends Component
         this.img = img;
     }
 
-    behaviour()
+    render()
     {
         var objPos = this.gameObject.transform.pos; 
         var objScale = this.gameObject.transform.scale;

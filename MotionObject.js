@@ -14,7 +14,7 @@ class MotionObject extends Component
         this.dir = dir.noramalize();
     }
 
-    behaviour = function()
+    update = function()
     {
         this.gameObject.transform.pos = this.gameObject.transform.pos.addVec(this.dir.scaleVec(this.speed));
     }

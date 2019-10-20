@@ -51,6 +51,14 @@ class Scene
         }
     }
 
+    render = function()
+    {
+        for(var i = 0; i < this.canvaces.length; i++)
+        {
+            this.canvaces[i].render();
+        }
+    }
+
     collisionCheck = function()
     {
         for(var i = 0; i < this.canvaces.length; i++)

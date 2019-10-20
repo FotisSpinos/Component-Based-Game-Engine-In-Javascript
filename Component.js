@@ -10,8 +10,18 @@ class Component
         this.gameObject = gameObject;
     }
 
-    behaviour()
+    start()
     {
 
+    }
+
+    update()
+    {
+
+    }
+
+    render()
+    {
+        
     }
 }
