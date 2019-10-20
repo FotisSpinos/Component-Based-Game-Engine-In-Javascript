@@ -6,11 +6,15 @@ let lastFrameTime = 0;
 
 function loadEditor()
 {
-    var box = new GameObject('box', new Vector2D(20.0, 20.0), new Vector2D(100.0, 100.0));
-    var img = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png", 'Google');
-    box.addComponent(img);
+    let obj1 = new GameObject('box1', new Vector2D(20.0, 20.0), new Vector2D(50.0, 50.0));
+    obj1.addComponent(new SquareShape(0));
+    obj1.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
 
-    goArray = [box];
+    let obj2 = new GameObject('box2', new Vector2D(69.0, 20.0), new Vector2D(50.0, 50.0));
+    obj2.addComponent(new SquareShape(0));
+    obj2.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
+
+    goArray = [obj1, obj2];
 
     var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
     var canvasArray = [canvas];

@@ -10,6 +10,11 @@ class Component
         this.gameObject = gameObject;
     }
 
+    start()
+    {
+
+    }
+
     update()
     {
 

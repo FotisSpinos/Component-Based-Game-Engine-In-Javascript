@@ -16,9 +16,6 @@ class GameObject
         // Add Collider
         this.collider;
 
-        // Excecute start function
-        this.start();
-
         // Set a reference to the canvas the game object belongs to
         this.canvas;
     }
@@ -33,6 +30,9 @@ class GameObject
     {
         this.components.push(addedComp);
         addedComp.gameObject = this;    // Set a rederence of the gameObject to the component we added
+
+        //Call start function
+        addedComp.start();
     }
 
     // Remove / de - attach component from this game object
@@ -64,10 +64,16 @@ class GameObject
     {
         for(var i = 0; i < this.components.length; i++)
         {
-            if(type == this.components[i].constructor)
-                return this.components[i];
-        }
+            let currentProto = this.components[i].__proto__;
 
+            while(currentProto != null &&
+                 currentProto.constructor != Component) 
+            {
+                if(type == currentProto.constructor)
+                    return this.components[i];
+                currentProto = currentProto.__proto__;
+            }
+        }
         return -1;
     }
 
@@ -79,7 +85,9 @@ class GameObject
 
     onCollisionEnter = function(collisionObj)
     {
-        //console.log('Collision happened in gameObject with obj: ' + collisionObj.id);
+        console.log(this);
+        console.log(collisionObj);
+        console.log('Collision happened in gameObject with obj: ' + collisionObj.id);
     }
 
     // Excecuted every component behaviour

@@ -69,7 +69,7 @@ class SquareShape extends Component
 
 class CircleShape extends Component
 {
-    constructor(radious)
+    constructor(radious, color)
     {
         super();
         this.startAng = 0;
