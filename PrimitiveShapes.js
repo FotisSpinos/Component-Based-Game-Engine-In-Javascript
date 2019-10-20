@@ -48,6 +48,7 @@ class SquareShape extends Component
     {
         super();
         this.color = color == null ? 'yellow' : color;
+        
     }
 
     render()

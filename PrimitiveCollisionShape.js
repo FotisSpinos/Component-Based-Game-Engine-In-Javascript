@@ -23,6 +23,16 @@ class Collision
         return false;
     }
 
+    static circleToRect(circle, rect)
+    {
+        let rectCentre = new Vector2D(rect.pos.x + rect.size.x / 2, rect.pos.y + rect.size.y / 2);
+        let dist = rectCentre.pos.minVec(circle).magnitude;
+
+        
+
+        return false;
+    }
+
     // Checks if a collision happens between a square and a circle
     static squareToCircle(rect1, circle)
     {
