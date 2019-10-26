@@ -1,55 +1,47 @@
-let inpt = new Input();
-let axis = new Axis('test1', 68, 65, 0.2);
-
-let framerate = 10;
-let lastFrameTime = 0;
+let engine;
 
 function loadEditor()
 {
-    let obj1 = new GameObject('box1', new Vector2D(20.0, 20.0), new Vector2D(50.0, 50.0));
-    obj1.addComponent(new SquareShape(0));
-    obj1.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
+    let obj1 = new GameObject('sprite', new Vector2D(0, 0), new Vector2D(100, 100));
 
-    let obj2 = new GameObject('box2', new Vector2D(69.0, 20.0), new Vector2D(50.0, 50.0));
-    obj2.addComponent(new SquareShape(0));
-    obj2.addComponent(new SquareCollider(new Vector2D(0, 0), new Vector2D(50.0, 50.0)));
+    let imgaeTest = new EngineImage('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSphPSyBMHiZh2MEb5dMPDyt0ZOsLx3YlWAw7j_aw6pvDdG5OYJ', 'name');
+    let spriteTest = new Sprite(imgaeTest, new Vector2D(0, 0), new Vector2D(80, 80), new Vector2D(10.2, 10.2), 1.2, 
+    80, [70, 70, 70]);
 
-    goArray = [obj1, obj2];
+    obj1.addComponent(spriteTest);
+    //obj1.removeComponent(EngineImage);
+
+    goArray = [obj1];
 
     var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
     var canvasArray = [canvas];
     
     var mainScene = new Scene('Main Scene', canvasArray);
-    var sceneManager = new SceneManager();
-    sceneManager.addScene(mainScene);
-    sceneManager.loadScene(mainScene.name);
+
+    engine.sceneManager.addScene(mainScene);
+    engine.sceneManager.loadScene(mainScene.name);
 }
 
-function start() 
-{
-    loadEditor();
-    gameLoop();
-}
+engine = new Engine();
+loadEditor();
+engine.initDefaultFramerate();
+requestAnimationFrame(Engine.instance.run);
 
 function gameLoop(timestamp)
 {
     var scene = SceneManager.runningScene;
+
+    engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
+    engine.lastFrameTime = Date.now();
 
     if(scene != null)
     {
         scene.clearCanvaces();
         scene.update();
         scene.render();
-        
-        lastFrameTime = timestamp;
     }
 
     requestAnimationFrame(gameLoop);
-}
-
-window.onload =() =>
-{
-    start();
 }
 
 /*

@@ -85,14 +85,14 @@ class GameObject
 
     onCollisionEnter = function(collisionObj)
     {
-        console.log(this);
-        console.log(collisionObj);
         console.log('Collision happened in gameObject with obj: ' + collisionObj.id);
     }
 
     // Excecuted every component behaviour
     updateComponents = function()
     {
+        console.log("This runs at gameObject: " + this.id);
+
         if(this.components.legnth == 0)
             return;
 
