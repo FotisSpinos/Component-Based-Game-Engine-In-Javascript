@@ -2,11 +2,14 @@ let engine;
 
 function loadEditor()
 {
-    let obj1 = new GameObject('sprite', new Vector2D(0, 0), new Vector2D(100, 100));
+    let obj1 = new GameObject('sprite', new Vector2D(100, 100), new Vector2D(100, 110));
 
-    let imgaeTest = new EngineImage('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSphPSyBMHiZh2MEb5dMPDyt0ZOsLx3YlWAw7j_aw6pvDdG5OYJ', 'name');
-    let spriteTest = new Sprite(imgaeTest, new Vector2D(0, 0), new Vector2D(80, 80), new Vector2D(10.2, 10.2), 1.2, 
-    80, [70, 70, 70]);
+    let imgaeTest = new EngineImage('https://www.spriters-resource.com/download/41806/', 'name');
+
+    //param 1 image source, start position, size, offset, delay timer, y border, x border.
+    let spriteTest = new Sprite(imgaeTest, new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 215.0), 0.6, 1, [6, 6]);
+    spriteTest = spriteTest.createReverseAnim();
+    
 
     obj1.addComponent(spriteTest);
     //obj1.removeComponent(EngineImage);
