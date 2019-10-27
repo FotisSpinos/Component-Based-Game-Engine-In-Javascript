@@ -40,6 +40,7 @@ class PlayerScript extends Component
     {        
         this.playerMovement = Input.instance.getAxis('Horizontal').axisValue;
         this.gameObject.transform.pos.x += this.playerMovement;
+        console.log('update');
     }
 
     render()
