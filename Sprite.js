@@ -1,10 +1,10 @@
 class SpriteAnimation
 {
-    constructor(engineImage, spritePos, spriteScale, offset, delay, ySteps, xSteps)
+    constructor(engineImage, startIndex, spriteScale, offset, delay, ySteps, xSteps)
     {
         //set sprite attributes
-        this.spritePos = spritePos;
-        this.spriteScale = spriteScale;
+        this.spritePos = startIndex.multVec(spriteScale.addVec(offset));
+        this.spriteScale =  spriteScale; 
 
         this.offset = offset;
         this.delay = delay;
@@ -70,7 +70,7 @@ class SpriteAnimation
 
         if(this.xStepsMax[this.xStepsIndex] > this.currentStepsX)
         {
-            this.spritePos.x += this.offset.x;
+            this.spritePos.x += this.offset.x + this.spriteScale.x;
             this.currentStepsX++;
         }
         else
@@ -87,7 +87,7 @@ class SpriteAnimation
                 this.spritePos.x = this.spritePosStore.x;
 
                 // move down
-                this.spritePos.y += this.offset.y;
+                this.spritePos.y += this.offset.y + this.spriteScale.y;
             }
             else if(this.repeatSprite)
             {
@@ -149,7 +149,13 @@ class SpriteAnimation
         let destY = this.destinationY();
         let destPos = new Vector2D(destX, destY);
 
-        return new Sprite(this.engineImage, destPos, this.spriteScale, new Vector2D(- this.offset.x, - this.offset.y), this.delayStore, this.yStepsMax, this.xStepsMax);
+        return new Sprite(this.engineImage, 
+                            destPos, 
+                            new Vector2D(- this.spriteScale.x, - this.spriteScale.y), 
+                            new Vector2D(- this.offset.x, - this.offset.y), 
+                            this.delayStore, 
+                            this.yStepsMax, 
+                            this.xStepsMax);
     }
 }
 

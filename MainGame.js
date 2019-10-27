@@ -23,7 +23,7 @@ function loadEditor()
     // Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), canvas.size);
     let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
-    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(1968/3, 752/2), 0.1, 1, [2, 0]);
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
     backgroundSprite.name = 'backgroundSprite';
 
     let backgroundAC = new AnimationController();
@@ -35,9 +35,9 @@ function loadEditor()
 /************************************************************************************************************************/
 
     // Create Character
-    let player = new GameObject('player', new Vector2D(30, 600), new Vector2D(200, 200)); 
+    let player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200)); 
 
-    /**
+    /*
     let deathSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
     new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
     deathSprite.name = 'deathSprite';

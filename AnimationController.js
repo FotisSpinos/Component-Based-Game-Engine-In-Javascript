@@ -24,6 +24,18 @@ class AnimationController extends Component
             spriteAnimation.initImg(this.gameObject.transform.scale);
     }
 
+    pauseAnimation(animName)
+    {
+        var index = -1;
+
+        // Find component index
+        for(var i = 0; i < this.spriteAnimations.length; i++)
+        {
+            if(animName == this.spriteAnimations[i].name)
+                this.spriteAnimations[i].pause();
+        }
+    }
+
     removeSpriteAnimation(animName)
     {
         var index = -1;
