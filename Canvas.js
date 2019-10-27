@@ -5,6 +5,7 @@ class Canvas
     {
         this.c.width = size.x;
         this.c.height = size.y;
+        this.size = size;
     }
 
     createCanvas(id, size)
@@ -12,10 +13,15 @@ class Canvas
         this.c = document.createElement('canvas');
         this.c.id = id;
 
+        this.size;
         this.setSize(size);
 
         var body = document.getElementsByTagName("body")[0];
         body.appendChild(this.c);
+
+        this.c.style.left = "0px";
+        this.c.style.top = "0px";
+        this.c.style.position =  "absolute";
     }
 
     constructor(id, size, drawObjs)
@@ -45,6 +51,7 @@ class Canvas
     addDrawObj = function(drawObj)
     {
         this.drawObjs.push(drawObj);
+        drawObj.setCanvas = this;
     }
 
     removeDrawObj = function(drawObj)
