@@ -31,11 +31,10 @@ class Engine
         engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
         engine.lastFrameTime = Date.now();
 
-        console.log("timestamp: " + timestamp);
-
         if(scene != null)
         {
             scene.clearCanvaces();
+            engine.inpt.updateAxis();
             scene.update();
             scene.render();
         }

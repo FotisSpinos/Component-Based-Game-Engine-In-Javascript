@@ -1,9 +1,11 @@
 class Axis
 {
-    constructor(id, positiveKeyID, negativeKeyID, rate)
+    constructor(id, positiveKeyID, negativeKeyID, rate, delay)
     {
         this.id = id;
         this.rate = rate;
+        this.delay = delay;
+        this.delayStore = delay;
 
         this.positiveKeyID = positiveKeyID;
         this.negativeKeyID = negativeKeyID;
@@ -36,6 +38,14 @@ class Axis
 
     update = function()
     {
+        if(this.delay > 0)
+        {
+            this.delay -= Engine.instance.deltaTime;
+            return;
+        }
+
+        this.delay = this.delayStore;
+        
         this.increaseFactor = this.culculateFactor(this.increaseFactor, this.positiveKeyID);
         this.decreaseFactor = this.culculateFactor(this.decreaseFactor, this.negativeKeyID);
 

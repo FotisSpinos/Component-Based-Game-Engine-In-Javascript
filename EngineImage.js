@@ -30,9 +30,4 @@ class EngineImage extends Component
         //Testing
         ctx.drawImage(this.img, objPos.x, objPos.y, objScale.x, objScale.y);
     }
-
-    update()
-    {
-        
-    }
 }

@@ -1,20 +1,104 @@
 let engine;
 
+// TASKS FOR NEXT TIME
+// Create new compoennt: animation controller
+// remove component inheritane from sprite class
+// animation controller: will store sprite animations
+// -add Sprite animations
+// -play sprite animation (and disable all the other sprite animations)
+// -remove sprite animation
+
 function loadEditor()
 {
+    var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    var canvas2 = new Canvas('Gameplay Canvas2', new Vector2D(window.innerWidth / 2, window.innerHeight), []);
+    var canvasArray = [canvas, canvas2];
+    
+    var mainScene = new Scene('Main Scene', canvasArray);
+    engine.sceneManager.addScene(mainScene);
+    engine.sceneManager.loadScene(mainScene.name);
+    
+/************************************************************************************************************************/
+
+    // Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), canvas.size);
+    let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(1968/3, 752/2), 0.1, 1, [2, 0]);
+    backgroundSprite.name = 'backgroundSprite';
+
+    let backgroundAC = new AnimationController();
+    backgroundAC.addSpriteAnimation(backgroundSprite);
+    backgroundAC.playAnimation('backgroundSprite');
+
+    backgroundGO.addComponent(backgroundAC);
+
+/************************************************************************************************************************/
+
+    // Create Character
+    let player = new GameObject('player', new Vector2D(30, 600), new Vector2D(200, 200)); 
+
+    /**
+    let deathSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
+    new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
+    deathSprite.name = 'deathSprite';
+
+    let attackSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'name'), 
+    new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [6]);
+    attackSprite.name = 'attackSprite';
+   
+    let walkSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
+    new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [7]);
+    walkSprite.name = 'walkSprite';
+
+    let playerAC = new AnimationController();
+    playerAC.addSpriteAnimation(deathSprite);
+    playerAC.addSpriteAnimation(attackSprite);
+    playerAC.addSpriteAnimation(walkSprite);
+    
+    playerAC.playAnimation('attackSprite');
+    player.addComponent(playerAC);
+    */
+
+    let ps = new PlayerScript();
+    player.addComponent(ps);
+
+/************************************************************************************************************************/
+
+    // Add GO's to canvas
+    canvas.addDrawObj(backgroundGO);
+    canvas.addDrawObj(player);
+
+/************************************************************************************************************************/
+    //Create Axis
+    let playerMovement = new Axis('Horizontal', 68, 65, 0.2, 0.2);
+}
+
+engine = new Engine();
+loadEditor();
+engine.initDefaultFramerate();
+requestAnimationFrame(Engine.instance.run);
+
+
+//https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
+    /*
+
+
     let obj1 = new GameObject('sprite', new Vector2D(100, 100), new Vector2D(100, 110));
+    let obj2 = new GameObject('sprite', new Vector2D(140, 100), new Vector2D(100, 110));
 
     let imgaeTest = new EngineImage('https://www.spriters-resource.com/download/41806/', 'name');
 
     //param 1 image source, start position, size, offset, delay timer, y border, x border.
-    let spriteTest = new Sprite(imgaeTest, new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 215.0), 0.6, 1, [6, 6]);
-    spriteTest = spriteTest.createReverseAnim();
+    let spriteTest = new Sprite(imgaeTest, new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 1, 0, [5]);
+    let engineImage = new EngineImage('https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif', 'test');
+    //spriteTest = spriteTest.createReverseAnim();
     
 
     obj1.addComponent(spriteTest);
+    obj2.addComponent(engineImage);
     //obj1.removeComponent(EngineImage);
 
-    goArray = [obj1];
+    goArray = [obj2, obj1];
 
     var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
     var canvasArray = [canvas];
@@ -23,29 +107,7 @@ function loadEditor()
 
     engine.sceneManager.addScene(mainScene);
     engine.sceneManager.loadScene(mainScene.name);
-}
-
-engine = new Engine();
-loadEditor();
-engine.initDefaultFramerate();
-requestAnimationFrame(Engine.instance.run);
-
-function gameLoop(timestamp)
-{
-    var scene = SceneManager.runningScene;
-
-    engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
-    engine.lastFrameTime = Date.now();
-
-    if(scene != null)
-    {
-        scene.clearCanvaces();
-        scene.update();
-        scene.render();
-    }
-
-    requestAnimationFrame(gameLoop);
-}
+    */
 
 /*
     // Define Player Game Object
@@ -87,4 +149,19 @@ function gameLoop(timestamp)
     var sceneManager = new SceneManager();
     sceneManager.addScene(mainScene);
     sceneManager.loadScene(mainScene.name);
+*/
+
+/*
+
+    let deathSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
+    new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
+
+    
+            let attackSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'name'), 
+    new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [6]);
+
+    
+    let attackSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
+    new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [10]);
+
 */

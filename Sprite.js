@@ -1,9 +1,7 @@
-class Sprite extends Component
+class SpriteAnimation
 {
     constructor(engineImage, spritePos, spriteScale, offset, delay, ySteps, xSteps)
     {
-        super();
-
         //set sprite attributes
         this.spritePos = spritePos;
         this.spriteScale = spriteScale;
@@ -28,21 +26,36 @@ class Sprite extends Component
         this.yStepsMax = ySteps;
         this.xStepsMax = xSteps;
 
-
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
 
         this.reverse = this.offset.x > 0 ? false : true;
+        this.repeatSprite = true;
+
+        //init name
+        this.name = '';
     }
 
-    start()
+    initImg(scale)
     {
         // Set image
-        this.spriteImg = new Image(this.gameObject.transform.scale.x, this.gameObject.transform.scale.y);
+        this.spriteImg = new Image(scale.x, scale.y);
 
         this.spriteImg.src = this.engineImage.url;
         this.spriteImg.id = this.engineImage.id;
+    }
+
+    reset()
+    {
+        this.spritePos = new Vector2D(this.spritePosStore.x, this.spritePosStore.y);
+        this.delay = this.delayStore;
+
+        this.xStepsIndex = 0;
+        this.currentStepsX = 0;
+        this.currentStepsY = 0;
+        
+        this.reverse = this.offset.x > 0 ? false : true;
     }
 
     update()
@@ -55,9 +68,7 @@ class Sprite extends Component
         if(this.delay > 0)
             return;
 
-       
-        if(this.xStepsIndex < this.xStepsIndex.length 
-            || this.xStepsMax[this.xStepsIndex] > this.currentStepsX)
+        if(this.xStepsMax[this.xStepsIndex] > this.currentStepsX)
         {
             this.spritePos.x += this.offset.x;
             this.currentStepsX++;
@@ -69,7 +80,8 @@ class Sprite extends Component
                 this.currentStepsY++;
                 this.xStepsIndex++;
 
-                this.currentStepsX = !this.reverse ? 0 : this.yStepsMax - this.xStepsIndex;
+                //this.currentStepsX = !this.reverse ? 0 : this.yStepsMax - this.xStepsIndex;
+                this.currentStepsX = !this.reverse ? 0 : this.xStepsMax.length - this.xStepsIndex;
 
                 //reset x pos
                 this.spritePos.x = this.spritePosStore.x;
@@ -77,18 +89,16 @@ class Sprite extends Component
                 // move down
                 this.spritePos.y += this.offset.y;
             }
+            else if(this.repeatSprite)
+            {
+                this.reset();
+            }
         }
         this.delay = this.delayStore;        
     }
 
-    render()
+    render(objPos, objScale, ctx)
     {
-        var objPos = this.gameObject.transform.pos; 
-        var objScale = this.gameObject.transform.scale;
-        var ctx = this.gameObject.canvas.ctx;
-
-        this.spritePos.print();
-
         ctx.drawImage(this.spriteImg, this.spritePos.x, this.spritePos.y, this.spriteScale.x, this.spriteScale.y,
              objPos.x, objPos.y, objScale.x, objScale.y);
     }
@@ -103,11 +113,6 @@ class Sprite extends Component
         this.active = true;
     }
 
-    reset()
-    {
-        this.spritePos = this.spritePosStore;
-    }
-
     destinationX(index)
     {
         return this.spritePosStore.x + this.offset.x * this.xStepsMax[index];
@@ -118,13 +123,33 @@ class Sprite extends Component
         return this.spritePosStore.y + this.offset.y * this.yStepsMax;
     }
 
+    reverseAnim()
+    {
+        let destX = this.destinationX(this.xStepsMax.length - 1);
+        let destY = this.destinationY();
+        let destPos = new Vector2D(destX, destY);
+
+        this.spritePosStore = destPos;
+        this.spritePos = destPos;
+
+        this.xStepsIndex = 0;
+        this.currentStepsX = 0;
+        this.currentStepsY = 0;
+
+
+
+        this.offset = new Vector2D(-this.offset.x, - this.offset.y);
+        this.delayStore = this.offset;
+        this.reverse = true;
+    }
+
     createReverseAnim()
     {
         let destX = this.destinationX(this.xStepsMax.length - 1);
         let destY = this.destinationY();
         let destPos = new Vector2D(destX, destY);
 
-        return new Sprite(this.engineImage, destPos, this.spriteScale, new Vector2D(- this.offset.x, - this.offset.y), this.delay, this.yStepsMax, this.xStepsMax);
+        return new Sprite(this.engineImage, destPos, this.spriteScale, new Vector2D(- this.offset.x, - this.offset.y), this.delayStore, this.yStepsMax, this.xStepsMax);
     }
 }
 
