@@ -36,41 +36,26 @@ function loadEditor()
 
     // Create Character
     let player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200)); 
-
-    /*
-    let deathSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
-    deathSprite.name = 'deathSprite';
-
-    let attackSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'name'), 
-    new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [6]);
-    attackSprite.name = 'attackSprite';
-   
-    let walkSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [7]);
-    walkSprite.name = 'walkSprite';
-
-    let playerAC = new AnimationController();
-    playerAC.addSpriteAnimation(deathSprite);
-    playerAC.addSpriteAnimation(attackSprite);
-    playerAC.addSpriteAnimation(walkSprite);
-    
-    playerAC.playAnimation('attackSprite');
-    player.addComponent(playerAC);
-    */
-
     let ps = new PlayerScript();
     player.addComponent(ps);
 
 /************************************************************************************************************************/
 
+    //Create Skeleton
+    let skeleton = new GameObject('skeleton', new Vector2D(60, 625), new Vector2D(200, 200)); 
+    let ss = new SkeletonScript();
+    skeleton.addComponent(ss);
+
+/************************************************************************************************************************/
+
     // Add GO's to canvas
     canvas.addDrawObj(backgroundGO);
+    canvas.addDrawObj(skeleton);
     canvas.addDrawObj(player);
 
 /************************************************************************************************************************/
     //Create Axis
-    let playerMovement = new Axis('Horizontal', 68, 65, 0.2, 0.2);
+    let playerMovement = new Axis('Horizontal', 68, 65, 0.3, 0.2);
 }
 
 engine = new Engine();
@@ -163,5 +148,11 @@ requestAnimationFrame(Engine.instance.run);
     
     let attackSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
     new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [10]);
+
+https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjTpoOW_77lAhW3AmMBHYQKDDwQjRx6BAgBEAQ&url=https%3A%2F%2Ftoppng.com%2Fphoto%2F196911%2Fskeleton-sprite-sheet&psig=AOvVaw2uX7B4Su1OtvDFk1YGjlkh&ust=1572353432010128
+https://i7.pngguru.com/preview/338/571/673/heroes-of-might-and-magic-iii-playstation-sprite-super-nintendo-entertainment-system-skeleton.jpg 
+
+
+https://media.giphy.com/media/jiNXp69XoO4tq/giphy.gif
 
 */

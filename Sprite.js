@@ -1,9 +1,17 @@
+const AnimationType = {
+    REVERSABLE: 'reversable',
+    REPEATABLE: 'repeatable'
+}
+
 class SpriteAnimation
 {
     constructor(engineImage, startIndex, spriteScale, offset, delay, ySteps, xSteps)
     {
         //set sprite attributes
         this.spritePos = startIndex.multVec(spriteScale.addVec(offset));
+        this.spritePos = new Vector2D(Math.abs(this.spritePos.x), Math.abs(this.spritePos.y));
+
+
         this.spriteScale =  spriteScale; 
 
         this.offset = offset;
@@ -30,11 +38,13 @@ class SpriteAnimation
         this.currentStepsX = 0;
         this.currentStepsY = 0;
 
-        this.reverse = this.offset.x > 0 ? false : true;
-        this.repeatSprite = true;
+        this.reversedAnim = this.offset.x > 0 ? false : true;
+        this.playForwardAnim = true;
 
         //init name
         this.name = '';
+
+        this.animType = AnimationType.REPEATABLE;
     }
 
     initImg(scale)
@@ -51,11 +61,17 @@ class SpriteAnimation
         this.spritePos = new Vector2D(this.spritePosStore.x, this.spritePosStore.y);
         this.delay = this.delayStore;
 
+        if(this.animType == AnimationType.REVERSABLE)
+        {
+            this.spriteScale = new Vector2D(Math.abs(this.spriteScale.x), Math.abs(this.spriteScale.y));        
+            this.offset = new Vector2D(Math.abs(this.offset.x), Math.abs(this.offset.y));
+        }
+
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
-        
-        this.reverse = this.offset.x > 0 ? false : true;
+
+        this.reversedAnim = this.offset.x > 0 ? false : true;
     }
 
     update()
@@ -75,13 +91,16 @@ class SpriteAnimation
         }
         else
         {
+            if(this.animType == AnimationType.REVERSABLE)
+                this.playForwardAnim = !this.playForwardAnim;
+
             if(this.yStepsMax > this.currentStepsY)
             {
                 this.currentStepsY++;
                 this.xStepsIndex++;
 
                 //this.currentStepsX = !this.reverse ? 0 : this.yStepsMax - this.xStepsIndex;
-                this.currentStepsX = !this.reverse ? 0 : this.xStepsMax.length - this.xStepsIndex;
+                this.currentStepsX = !this.reversedAnim ? 0 : this.xStepsMax.length - this.xStepsIndex;
 
                 //reset x pos
                 this.spritePos.x = this.spritePosStore.x;
@@ -89,11 +108,16 @@ class SpriteAnimation
                 // move down
                 this.spritePos.y += this.offset.y + this.spriteScale.y;
             }
-            else if(this.repeatSprite)
+            else if(!this.playForwardAnim)
+            {                
+                this.reverse();
+            }
+            else
             {
                 this.reset();
             }
         }
+
         this.delay = this.delayStore;        
     }
 
@@ -115,32 +139,33 @@ class SpriteAnimation
 
     destinationX(index)
     {
-        return this.spritePosStore.x + this.offset.x * this.xStepsMax[index];
+        this.spriteScale.x = Math.abs(this.spriteScale.x);
+        this.spriteScale.y = Math.abs(this.spriteScale.y);
+        
+        this.offset.x  = Math.abs(this.offset.x);
+        this.offset.y  = Math.abs(this.offset.y);
+
+        return this.spritePosStore.x + (this.offset.x + this.spriteScale.x) * (this.xStepsMax[this.xStepsMax.length - 1] + 1);
     }
 
     destinationY()
     {
-        return this.spritePosStore.y + this.offset.y * this.yStepsMax;
+        return this.spritePosStore.y + (this.offset.y + this.spriteScale.y) * (this.yStepsMax + 1);
     }
 
-    reverseAnim()
+    reverse()
     {
         let destX = this.destinationX(this.xStepsMax.length - 1);
         let destY = this.destinationY();
         let destPos = new Vector2D(destX, destY);
 
-        this.spritePosStore = destPos;
         this.spritePos = destPos;
 
+        this.offset = new Vector2D(-this.offset.x, -this.offset.y);
+        this.spriteScale = new Vector2D(-this.spriteScale.x, -this.spriteScale.y);
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
-
-
-
-        this.offset = new Vector2D(-this.offset.x, - this.offset.y);
-        this.delayStore = this.offset;
-        this.reverse = true;
     }
 
     createReverseAnim()
@@ -158,30 +183,3 @@ class SpriteAnimation
                             this.xStepsMax);
     }
 }
-
-
-        /*
-        if(!this.active)
-            return;
-
-        if(this.delay < 0)
-        {            
-            if(this.xBorders[this.xBordersIndex] > this.spritePos.x)
-            {
-                this.spritePos.x += this.offset.x;
-            } 
-            else if(this.yBorder > this.spritePos.y)
-            {
-                if(this.xBorders.length > this.xBordersIndex + 1)
-                {
-                    this.xBordersIndex++;
-                }
-
-                this.spritePos.x = this.spritePosStore.x;
-                this.spritePos.y += this.offset.y;
-            }
-            this.delay = this.delayStore;
-        }
-
-        this.delay -= Engine.instance.deltaTime;
-        */

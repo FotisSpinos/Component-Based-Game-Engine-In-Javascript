@@ -59,7 +59,7 @@ class AnimationController extends Component
         for(var i = 0; i < this.spriteAnimations.length; i++)
         {
             if(animName == this.spriteAnimations[i].name)
-            {
+            {                
                 this.activeAnimation = this.spriteAnimations[i];
                 this.spriteAnimations[i].active = true;
             }
