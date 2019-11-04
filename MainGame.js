@@ -20,7 +20,7 @@ function loadEditor()
     
 /************************************************************************************************************************/
 
-    // Create Background
+    //* Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), canvas.size);
     let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
@@ -34,27 +34,33 @@ function loadEditor()
 
 /************************************************************************************************************************/
 
-    // Create Character
-    let player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200)); 
+    //* Create Character
+    let player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200));  
+    let playerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(140, 180)); 
     let ps = new PlayerScript();
+
     player.addComponent(ps);
+    player.addComponent(playerCollider);
 
 /************************************************************************************************************************/
 
-    //Create Skeleton
-    let skeleton = new GameObject('skeleton', new Vector2D(60, 625), new Vector2D(200, 200)); 
+    //* Create Skeleton
+    let skeleton = new GameObject('skeleton', new Vector2D(960, 653), new Vector2D(100, 150));
+    let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
     let ss = new SkeletonScript();
+
     skeleton.addComponent(ss);
+    skeleton.addComponent(skeletonCollider);
 
 /************************************************************************************************************************/
 
-    // Add GO's to canvas
+    //* Add GO's to canvas
     canvas.addDrawObj(backgroundGO);
-    canvas.addDrawObj(skeleton);
     canvas.addDrawObj(player);
+    canvas.addDrawObj(skeleton);
 
 /************************************************************************************************************************/
-    //Create Axis
+    //* Create Axis
     let playerMovement = new Axis('Horizontal', 68, 65, 0.3, 0.2);
 }
 
@@ -65,6 +71,7 @@ requestAnimationFrame(Engine.instance.run);
 
 
 //https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
+//https://www.spriters-resource.com/resources/sheets/27/29409.png
     /*
 
 

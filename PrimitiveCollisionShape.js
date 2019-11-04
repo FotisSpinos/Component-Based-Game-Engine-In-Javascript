@@ -1,5 +1,14 @@
 class Collision
 {
+    constructor(gameObject, collisionDir)
+    {
+        this.gameObject = gameObject;
+        this.collisionDir = collisionDir.noramalize();
+    }
+}
+
+class CollisionChecker
+{
     // Checks if a collision occurs between two circles has happened
     static circleToCircle(circle1, circle2)
     {
@@ -52,16 +61,16 @@ class Collision
 
     static checkCollision = function(collider1, collider2)
     {
-        var type1 = Collision.defineCollisionType(collider1);
-        var type2 = Collision.defineCollisionType(collider2);
+        var type1 = CollisionChecker.defineCollisionType(collider1);
+        var type2 = CollisionChecker.defineCollisionType(collider2);
         
         if(type1 == CircleCollider && type2 == CircleCollider)
         {
-            return Collision.circleToCircle(collider1, collider2);
+            return CollisionChecker.circleToCircle(collider1, collider2);
         }
         else if(type1 == SquareCollider && type2 == SquareCollider)
         {
-            return Collision.rectToRect(collider1, collider2);
+            return CollisionChecker.rectToRect(collider1, collider2);
         }
         else
         {
@@ -85,9 +94,11 @@ class Collision
             if(collider == -1)
                 continue;
 
-            if(Collision.checkCollision(colliderObj, collider))
+            if(CollisionChecker.checkCollision(colliderObj, collider))
             {
-                colliderObj.gameObject.onCollisionEnter(collider.gameObject);
+                let collision = new Collision(collider.gameObject, colliderObj.gameObject.transform.pos.minVec(collider.gameObject.transform.pos));
+                //colliderObj.gameObject.onCollisionEnter(collider.gameObject);
+                colliderObj.gameObject.onCollisionEnter(collision);
             }
         }    
     }
@@ -143,7 +154,7 @@ class CircleCollider extends Collider
     {
         //update position
         this.pos = this.gameObject.transform.pos.addVec(this.offset);
-        Collision.checkCanvasCollisions(this);  
+        CollisionChecker.checkCanvasCollisions(this);  
     }
 }
 
@@ -164,7 +175,11 @@ class SquareCollider extends Collider
     update()
     {
         this.updatePos();
+        CollisionChecker.checkCanvasCollisions(this);
+    }
 
-        Collision.checkCanvasCollisions(this);
+    render()
+    {
+
     }
 }

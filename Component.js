@@ -24,4 +24,9 @@ class Component
     {
         
     }
+
+    onCollisionEnter(collisionObj)
+    {
+
+    }
 }

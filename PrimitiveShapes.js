@@ -44,22 +44,29 @@ class LineShape extends Component
 
 class SquareShape extends Component
 {
-    constructor(color)
+    constructor(color, scale)
     {
         super();
         this.color = color == null ? 'yellow' : color;
-        
+        this.scale = scale;
+    }
+
+    start()
+    {
+        if(this.scale == null)
+        {
+            this.scale = this.gameObject.transform.scale;
+        }
     }
 
     render()
     {
         // get Game Object variables
         var objPos = this.gameObject.transform.pos; 
-        var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
         ctx.fillStyle = this.color;
-        ctx.fillRect(objPos.x, objPos.y, objScale.x, objScale.y);
+        ctx.fillRect(objPos.x, objPos.y, this.scale.x, this.scale.y);
     }
 
     print = function()

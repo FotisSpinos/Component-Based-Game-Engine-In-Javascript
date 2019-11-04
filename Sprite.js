@@ -3,48 +3,49 @@ const AnimationType = {
     REPEATABLE: 'repeatable'
 }
 
+const AnimationState = {
+    PAUSED: 'paused',
+    PLAYING: 'playing' 
+}
+
+// ? Do we need all the reverse function at the botom
+
 class SpriteAnimation
 {
-    constructor(engineImage, startIndex, spriteScale, offset, delay, ySteps, xSteps)
+    constructor(engineImage, startIndex, spriteScale, blankSpace, updateTimer, ySteps, xSteps)
     {
-        //set sprite attributes
-        this.spritePos = startIndex.multVec(spriteScale.addVec(offset));
+        //define sprite position in the image
+        this.spritePos = startIndex.multVec(spriteScale.addVec(blankSpace));
         this.spritePos = new Vector2D(Math.abs(this.spritePos.x), Math.abs(this.spritePos.y));
-
-
-        this.spriteScale =  spriteScale; 
-
-        this.offset = offset;
-        this.delay = delay;
-
-        // store initial sprite attributes
-        this.delayStore = delay;
-        this.spritePosStore = Object.assign({}, this.spritePos); 
-
-        // Activate animation
-        this.active = true;
-
-        // Set engine sprite
+        
+        // define sprite attributes
         this.engineImage = engineImage;
+        this.spriteScale =  spriteScale;
+        this.blankSpace = blankSpace;
+        this.animState = AnimationState.PLAYING;
+        this.posOffset;
+        this.name = '';
 
-        //init sprite image
-        this.spriteImg;
-
-
-        this.yStepsMax = ySteps;
-        this.xStepsMax = xSteps;
+        // define animation attributes
+        this.ySteps = ySteps;
+        this.xSteps = xSteps;
 
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
 
-        this.reversedAnim = this.offset.x > 0 ? false : true;
+        this.updateTimer = updateTimer;
         this.playForwardAnim = true;
-
-        //init name
-        this.name = '';
-
         this.animType = AnimationType.REPEATABLE;
+
+        // store initial variable copies 
+        this.spriteScaleStore = spriteScale;
+        this.offsetStore = blankSpace;
+        this.updateTimerStore = updateTimer;
+        this.spritePosStore = Object.assign({}, this.spritePos); 
+
+        //init sprite image
+        this.spriteImg;
     }
 
     initImg(scale)
@@ -58,128 +59,149 @@ class SpriteAnimation
 
     reset()
     {
-        this.spritePos = new Vector2D(this.spritePosStore.x, this.spritePosStore.y);
-        this.delay = this.delayStore;
+        // reset sprite attributes
 
-        if(this.animType == AnimationType.REVERSABLE)
-        {
-            this.spriteScale = new Vector2D(Math.abs(this.spriteScale.x), Math.abs(this.spriteScale.y));        
-            this.offset = new Vector2D(Math.abs(this.offset.x), Math.abs(this.offset.y));
-        }
+        this.spriteScale = this.spriteScaleStore; 
+        this.blankSpace = this.offsetStore;
+        this.spritePos = new Vector2D(this.spritePosStore.x, this.spritePosStore.y);
 
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
 
-        this.reversedAnim = this.offset.x > 0 ? false : true;
+        this.playForwardAnim = true;
     }
 
     update()
     {        
-        if(!this.active)
+        // Check if we should play the animation
+        if(this.animState != AnimationState.PLAYING)
             return;
         
-        this.delay -= Engine.instance.deltaTime;
+        // Check if we can update the sprite animation
+        this.updateTimer -= Engine.instance.deltaTime;
 
-        if(this.delay > 0)
+        if(this.updateTimer > 0)
             return;
 
-        if(this.xStepsMax[this.xStepsIndex] > this.currentStepsX)
+        // check if we can move horizontally
+        if(this.xSteps[this.xStepsIndex] > this.currentStepsX)
         {
-            this.spritePos.x += this.offset.x + this.spriteScale.x;
+            this.spritePos.x += this.blankSpace.x + this.spriteScale.x;
             this.currentStepsX++;
         }
         else
         {
-            if(this.animType == AnimationType.REVERSABLE)
-                this.playForwardAnim = !this.playForwardAnim;
-
-            if(this.yStepsMax > this.currentStepsY)
+            // check if we can move vertically
+            if(this.ySteps > this.currentStepsY)
             {
+                // determine the next set of steps for the x axis
+                this.currentStepsX = !this.playForwardAnim ? 0 : this.xSteps.length - this.xStepsIndex;
+
+                //get next step index
                 this.currentStepsY++;
                 this.xStepsIndex++;
-
-                //this.currentStepsX = !this.reverse ? 0 : this.yStepsMax - this.xStepsIndex;
-                this.currentStepsX = !this.reversedAnim ? 0 : this.xStepsMax.length - this.xStepsIndex;
 
                 //reset x pos
                 this.spritePos.x = this.spritePosStore.x;
 
-                // move down
-                this.spritePos.y += this.offset.y + this.spriteScale.y;
-            }
-            else if(!this.playForwardAnim)
-            {                
-                this.reverse();
+                // move sprite vertically
+                this.spritePos.y += this.blankSpace.y + this.spriteScale.y;
             }
             else
             {
-                this.reset();
+                // if the animation is reversable: change the traversal order for the next steps
+                if(this.animType == AnimationType.REVERSABLE)
+                    this.playForwardAnim = !this.playForwardAnim;
+
+                // reverse the animation if it was played forward for the current steps
+                if(!this.playForwardAnim)                
+                    this.reverse();
+                else
+                    this.reset();   
             }
         }
 
-        this.delay = this.delayStore;        
+        // reset timer for the next update
+        this.updateTimer = this.updateTimerStore;
     }
 
     render(objPos, objScale, ctx)
-    {
-        ctx.drawImage(this.spriteImg, this.spritePos.x, this.spritePos.y, this.spriteScale.x, this.spriteScale.y,
-             objPos.x, objPos.y, objScale.x, objScale.y);
+    {   
+        if(this.posOffset != null)
+        {
+            objPos = objPos.addVec(this.posOffset);
+        }
+
+        ctx.drawImage(this.spriteImg,
+            this.spritePos.x, this.spritePos.y, 
+            this.spriteScale.x, this.spriteScale.y,
+            objPos.x, objPos.y, 
+            objScale.x, objScale.y);
     }
 
-    pause()
-    {
-        this.active = false;
-    }
+    pause() { this.animState = AnimationState.PAUSED; }
 
-    continue()
-    {
-        this.active = true;
-    }
+    play() { this.animState = AnimationState.PLAYING; }
+
+    isPlaying() {return this.animState == AnimationState.PLAYING; }
 
     destinationX(index)
     {
-        this.spriteScale.x = Math.abs(this.spriteScale.x);
-        this.spriteScale.y = Math.abs(this.spriteScale.y);
-        
-        this.offset.x  = Math.abs(this.offset.x);
-        this.offset.y  = Math.abs(this.offset.y);
-
-        return this.spritePosStore.x + (this.offset.x + this.spriteScale.x) * (this.xStepsMax[this.xStepsMax.length - 1] + 1);
+        return this.spritePosStore.x + (this.blankSpace.x + this.spriteScale.x) * (this.xSteps[index] + 1);
     }
 
     destinationY()
     {
-        return this.spritePosStore.y + (this.offset.y + this.spriteScale.y) * (this.yStepsMax + 1);
+        return this.spritePosStore.y + (this.blankSpace.y + this.spriteScale.y) * (this.ySteps + 1);
     }
 
     reverse()
     {
-        let destX = this.destinationX(this.xStepsMax.length - 1);
+        // define destination position
+        let destX = this.destinationX(this.xSteps.length - 1);
         let destY = this.destinationY();
         let destPos = new Vector2D(destX, destY);
 
         this.spritePos = destPos;
 
-        this.offset = new Vector2D(-this.offset.x, -this.offset.y);
+        // reverse direction of animation 
+        this.blankSpace = new Vector2D(-this.blankSpace.x, -this.blankSpace.y);
         this.spriteScale = new Vector2D(-this.spriteScale.x, -this.spriteScale.y);
+
+        // reset animation variables
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
     }
 
+    get animDuration()
+    {
+        var stepsTotal = 0;
+
+        for(var i = 0; i < this.xSteps.length; i++)
+        {
+            stepsTotal += this.xSteps[i];
+        }
+
+        if(this.animType == AnimationType.REPEATABLE)
+            return stepsTotal * this.updateTimer;
+        else
+            return stepsTotal * this.updateTimer * 2;
+    }
+
     createReverseAnim()
     {
-        let destX = this.destinationX(this.xStepsMax.length - 1);
+        let destX = this.destinationX(this.xSteps.length - 1);
         let destY = this.destinationY();
         let destPos = new Vector2D(destX, destY);
 
         return new Sprite(this.engineImage, 
                             destPos, 
                             new Vector2D(- this.spriteScale.x, - this.spriteScale.y), 
-                            new Vector2D(- this.offset.x, - this.offset.y), 
-                            this.delayStore, 
-                            this.yStepsMax, 
-                            this.xStepsMax);
+                            new Vector2D(- this.blankSpace.x, - this.blankSpace.y), 
+                            this.updateTimerStore, 
+                            this.ySteps, 
+                            this.xSteps);
     }
 }
