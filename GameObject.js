@@ -121,7 +121,9 @@ class GameObject
     // Finds a game object in the scene from it's id
     static find(id)
     {
-        var canvaces = SceneManager.runningScene.canvaces;
+        if(SceneManager.instance == null)
+            return null;
+        var canvaces = SceneManager.instance.runningScene.canvaces;
         
         for(var c = 0; c < canvaces.length; c++)
         {

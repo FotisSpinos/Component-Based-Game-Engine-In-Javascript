@@ -4,6 +4,12 @@ const CharacterState = {
     ATTACK: 'attack'
 } 
 
+
+const direction = {
+    RIGHT: 'right',
+    LEFT: 'left'
+}
+
 //! animation controller makes sure that one animation is played at a time
 //! player get out of the canvas
 
@@ -27,12 +33,17 @@ class PlayerScript extends Component
         this.currentState = CharacterState.WALK;
 
         // attack duration
-        this.attackDuration = 1.2;
-        this.attackDurationStore = 1.2;
+        this.attackDuration = 1.3;
+        this.attackDurationStore = 1.3;
 
         // attack rate
         this.attackRate = 0;
         this.attackRateStore = 3.0;
+
+        //fireball spawn index img
+        this.fireballSpawnIndexImg - 3;
+
+        this.lastWalkAnim;
     }
 
     start()
@@ -71,8 +82,6 @@ class PlayerScript extends Component
         this.attackSpriteBackwards.posOffset = new Vector2D(-47.0, 0.0);
 
         this.attackSpriteBackwards.animType = AnimationType.REVERSABLE;     
-
-
         
         // add animations to animation controller    
         this.playerAC = new AnimationController();
@@ -93,17 +102,42 @@ class PlayerScript extends Component
         //this.gameObject.addComponent(squareShape, new Vector2D(1, 1));
     }
 
-    //TODO clean up update
-    //TODO create functions to check if we are within the window
-    //TODO create function to check if the player doesnt move towards the collision object
-    //TODO add more commnets on update
+    createFireBall()
+    {
+        this.fireballCreated = true;
+
+        let spawnPos = new Vector2D(this.gameObject.transform.pos.x, this.gameObject.transform.pos.y);
+        spawnPos.y += 70;
+
+        //* define fireball direction
+        let fbDir;
+        
+        if(this.lastWalkAnim == 'walkForwardSprite')
+        {
+            spawnPos.x += 100;
+            fbDir = direction.RIGHT;
+        }
+        else
+        {
+            spawnPos.x -= 100;
+            fbDir = direction.LEFT;
+        }
+
+        let fireball = new GameObject('fireball', spawnPos, new Vector2D(100, 100));
+        let fireballCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(100, 80)); 
+        let fireBallScript = new FireballScript(fbDir);
+
+        fireball.addComponent(fireballCollider);
+        fireball.addComponent(fireBallScript);
+
+        this.gameObject.canvas.addDrawObj(fireball);
+    }
 
     update()
     {
         //* make sure that the player exists in the map
         if(this.skeleton == null)
             this.skeleton = GameObject.find('skeleton');
-
             
 
         if(this.currentState != CharacterState.ATTACK)
@@ -129,7 +163,6 @@ class PlayerScript extends Component
             this.playerMovement = 0;
             this.attackDuration -= Engine.instance.deltaTime;
 
-            
             if(this.attackDuration <= 0)
             {
                 this.playerAC.playAnimation('walkForwardSprite');            
@@ -139,11 +172,28 @@ class PlayerScript extends Component
             }
         }
 
+        if(this.currentState == CharacterState.ATTACK)
+            console.log(this.playerAC.activeAnimation);
+
+        if(this.currentState == CharacterState.ATTACK && 
+            this.playerAC.activeAnimation.currentStepsX == 5 && 
+            !this.fireballCreated)
+                this.createFireBall();
+
         // *The player can attack if the E key is pressed when the player does not attack or waiting for the attack timer
         if(Input.instance.keys[69] && this.attackRate < 0 && this.currentState != CharacterState.ATTACK)
         {            
+            // * decleare that fireball has not been created for this attack
+            this.fireballCreated = false;
+
+            // * reset attack rate and update state
             this.attackRate = this.attackRateStore;
             this.currentState = CharacterState.ATTACK;
+
+            //* recond last walk animation
+            this.lastWalkAnim = this.playerAC.activeAnimation.name; 
+
+            // * play correct attack animation
             if(this.playerAC.activeAnimation.name == 'walkForwardSprite')
                 this.playerAC.playAnimation('attackForwardSprite');
             else
@@ -151,6 +201,7 @@ class PlayerScript extends Component
             return;
         }
      
+        //* Move plauer
         if(Math.abs(this.playerMovement) < 0.2)
         {
             this.playerAC.pauseAnimation('walkBackwardsSprite');
@@ -180,6 +231,8 @@ class PlayerScript extends Component
 }
 
 /*
+https://www.deviantart.com/ninetails2000/art/Ninetails-SHIFT-Sprite-Sheet-166444005
+
 // create sprite animations
         this.deathSprite = new SpriteAnimation(this.charImageAnim, 
             new Vector2D(0, 1), new Vector2D(102, 106), new Vector2D(-0, -9), 0.1, 0, [9]);

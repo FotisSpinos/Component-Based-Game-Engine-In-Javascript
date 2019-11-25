@@ -8,20 +8,85 @@ let engine;
 // -play sprite animation (and disable all the other sprite animations)
 // -remove sprite animation
 
-function loadEditor()
+function openningScene()
 {
-    var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
-    var canvas2 = new Canvas('Gameplay Canvas2', new Vector2D(window.innerWidth / 2, window.innerHeight), []);
-    var canvasArray = [canvas, canvas2];
+    let openningCanvas = new Canvas('Openning Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    let canvasArray = [openningCanvas];
+
+    var openningScene = new Scene('Openning Scene', canvasArray);
+    engine.sceneManager.addScene(openningScene);
+    
+    //? do we need that
+    Engine.instance.sceneManager.loadScene(openningScene.name);
+
+/************************************************************************************************************************/
+    // * Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), openningCanvas.size);
+    let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
+    backgroundSprite.name = 'backgroundSprite';
+
+
+    let backgroundAC = new AnimationController();
+    backgroundAC.addSpriteAnimation(backgroundSprite);
+    backgroundAC.playAnimation('backgroundSprite');
+
+
+    backgroundGO.addComponent(backgroundAC);
+
+  /************************************************************************************************************************/  
+
+    //* Create Button 
+    let playMainGameGO = new GameObject('skeleton', new Vector2D(110, 50), new Vector2D(210, 100));
+    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
+        Engine.instance.sceneManager.runningScene.clearCanvaces();
+        Engine.instance.sceneManager.loadScene('Main Scene');});
+    
+    playMainGameGO.addComponent(playMainGameBtn);
+
+/************************************************************************************************************************/
+    //* Create Instroctions title Text 
+    let instructionsGO = new GameObject('instructions title GO', new Vector2D(100, 200), new Vector2D(100, 120));
+    let instructionsText = new EngineText('Instructions');
+
+    instructionsGO.addComponent(instructionsText);
+    
+/************************************************************************************************************************/
+    //* Create arrow keys Text Instroctions  
+    let instructionsArrowKeysGO = new GameObject('instruction arrow keys GO', new Vector2D(100, 245), new Vector2D(100, 165));
+    let instructionsArrowKeysText = new EngineText('Press the arrow keys to move');
+
+    instructionsArrowKeysGO.addComponent(instructionsArrowKeysText);
+
+    /************************************************************************************************************************/
+    //* Create attack Text Instroctions 
+    let instructionsAttackGO = new GameObject('instruction attack key GO', new Vector2D(100, 290), new Vector2D(100, 210));
+    let instructionsAttackText = new EngineText('Press E to attack');
+
+    instructionsAttackGO.addComponent(instructionsAttackText);
+
+/************************************************************************************************************************/
+    //* add objs to canvas
+    openningCanvas.addDrawObj(backgroundGO)
+    openningCanvas.addDrawObj(instructionsGO);
+    openningCanvas.addDrawObj(instructionsArrowKeysGO);
+    openningCanvas.addDrawObj(instructionsAttackGO);
+    openningCanvas.addDrawObj(playMainGameGO);
+}
+
+function mainGameScene()
+{
+    var mainGameCanvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    var canvasArray = [mainGameCanvas];
     
     var mainScene = new Scene('Main Scene', canvasArray);
     engine.sceneManager.addScene(mainScene);
-    engine.sceneManager.loadScene(mainScene.name);
+    //? engine.sceneManager.loadScene(mainScene.name);
     
 /************************************************************************************************************************/
 
     //* Create Background
-    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), canvas.size);
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), mainGameCanvas.size);
     let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
     backgroundSprite.name = 'backgroundSprite';
@@ -45,7 +110,7 @@ function loadEditor()
 /************************************************************************************************************************/
 
     //* Create Skeleton
-    let skeleton = new GameObject('skeleton', new Vector2D(960, 653), new Vector2D(100, 150));
+    let skeleton = new GameObject('skeleton', new Vector2D(960, 653), new Vector2D(180, 180));
     let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
     let ss = new SkeletonScript();
 
@@ -55,23 +120,37 @@ function loadEditor()
 /************************************************************************************************************************/
 
     //* Add GO's to canvas
-    canvas.addDrawObj(backgroundGO);
-    canvas.addDrawObj(player);
-    canvas.addDrawObj(skeleton);
+    mainGameCanvas.addDrawObj(backgroundGO);
+    mainGameCanvas.addDrawObj(player);
+    mainGameCanvas.addDrawObj(skeleton);
 
 /************************************************************************************************************************/
     //* Create Axis
     let playerMovement = new Axis('Horizontal', 68, 65, 0.3, 0.2);
 }
 
+function endScene()
+{
+
+}
+
 engine = new Engine();
-loadEditor();
+mainGameScene();
+openningScene();
 engine.initDefaultFramerate();
 requestAnimationFrame(Engine.instance.run);
 
 
-//https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
-//https://www.spriters-resource.com/resources/sheets/27/29409.png
+//* https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
+//* https://www.spriters-resource.com/resources/sheets/27/29409.png
+//* https://myrealdomain.com/explore/fireball-gif-transparent.html
+//* https://www.spriters-resource.com/pc_computer/heroes3/sheet/44972/
+//* https://www.spriters-resource.com/pc_computer/heroesofmightandmagic2/sheet/29404/
+//* https://www.emugifs.net/guilty-gear-xx-reload-arcade-game-animated-background-sprite-stages/
+//* https://www.emugifs.net/wp-content/uploads/2018/12/Guilty-Gear-XX-Reload-Arcade-Video-Game-2002-Sammy-Backgrounds-Stages-Testament-Sprites.gif
+//* http://static3.wikia.nocookie.net/__cb20121229200354/browserquest/images/9/9f/Play_Button.png
+
+//* https://www.w3schools.com/graphics/canvas_text.asp
     /*
 
 

@@ -6,8 +6,14 @@ class Input
     constructor()
     {
         this.keys = [];
+        this.buttonDown = true;
+        this.onMouseDownPos = new Vector2D(0,0);
+        this.onMouseUpPos = new Vector2D(0,0);
+
         document.addEventListener('keydown', this.keyDown, false);
         document.addEventListener('keyup', this.keyUp, false);
+        document.addEventListener('mousedown', this.mouseDown, false);
+        document.addEventListener('mouseup', this.mouseUp, false);
         Input.instance = this;
     }   
 
@@ -36,5 +42,21 @@ class Input
     keyUp = function(event) 
     {
         Input.instance.keys[event.keyCode] = false;
+    }
+
+    mouseDown = function()
+    {
+        Input.instance.onMouseDownPos.x = event.clientX;
+        Input.instance.onMouseDownPos.y = event.clientY;
+
+        Input.instance.buttonDown = true;
+    }
+
+    mouseUp = function()
+    {
+        Input.instance.onMouseUpPos.x = event.clientX;
+        Input.instance.onMouseUpPos.y = event.clientY;
+
+        Input.instance.buttonDown = false;
     }
 }

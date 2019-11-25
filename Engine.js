@@ -10,6 +10,8 @@ class Engine
         this.inpt = new Input();
         this.sceneManager = new SceneManager();
         
+        this.previousScene;
+
         this.timestep = 0;
         this.lastFrameTime = 0;
         this.maxFps = 0;
@@ -26,7 +28,9 @@ class Engine
     run = function(timestamp)
     {
         let engine = Engine.instance;
-        var scene = SceneManager.runningScene;
+        var scene = SceneManager.instance.runningScene;
+        if(scene != engine.previousScene && engine.previousScene != null)
+            engine.previousScene.clearCanvaces();
 
         engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
         engine.lastFrameTime = Date.now();
@@ -39,6 +43,7 @@ class Engine
             scene.render();
         }
         
+        engine.previousScene = scene;
         requestAnimationFrame(engine.run);
     }
 }

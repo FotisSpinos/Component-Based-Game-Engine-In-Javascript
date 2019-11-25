@@ -1,12 +1,13 @@
 class SceneManager
 {
-    static runningScene;
+    //static runningScene;
     static instance;
 
     constructor()
     {
         SceneManager.instance = this;
         this.scenes = [];
+        this.runningScene;
     }
 
     addScene(scene)
@@ -21,7 +22,7 @@ class SceneManager
             var currentID = this.scenes[i].name;
             if(currentID == sceneID)
             {
-                SceneManager.runningScene = this.scenes[i];
+                this.runningScene = this.scenes[i];
                 return;
             }
         }
