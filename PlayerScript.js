@@ -44,6 +44,8 @@ class PlayerScript extends Component
         this.fireballSpawnIndexImg - 3;
 
         this.lastWalkAnim;
+
+        this.health = 3;
     }
 
     start()

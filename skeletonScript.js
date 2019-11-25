@@ -17,8 +17,11 @@ class SkeletonScript extends Component
         this.currentState = CharacterState.WALK;
 
         // attack rate
-        this.attackDuration = 0;
-        this.attackDurationStore = 1.2;
+        this.attackDuration = 0.8;
+        this.attackDurationStore = 0.8;
+
+        this.attackRate = 3.0;
+        this.attackRateStore = 3.0;
 
         this.attackDist = 10.0;
 
@@ -53,6 +56,8 @@ class SkeletonScript extends Component
         this.gameObject.addComponent(this.skeletonAC);
 
         this.skeletonAC.playAnimation('walkSprite');
+
+        this.attackRate = 0;
     }
 
     update()
@@ -60,19 +65,55 @@ class SkeletonScript extends Component
         //* make sure that the player exists in the map
         if(this.player == null)
             this.player = GameObject.find('player');
-        
+
         let playerDist = Math.abs(this.player.transform.pos.x - this.gameObject.transform.pos.x + this.player.transform.scale.x / 2);
         
+        if(this.currentState == CharacterState.ATTACK)
+        {
+            this.skeletonAC.playAnimation('attackSprite');
+            this.attackDuration -= Engine.instance.deltaTime;
+
+            AudioManager.instance.playAudio("ghost attack");
+
+            if(this.attackDuration <= 0)
+            {
+                let playerScirpt = this.player.getComponent(PlayerScript);
+                playerScirpt.health--;
+                if(playerScirpt.health == 0)
+                {
+                    this.gameObject.canvas.removeDrawObj(this.player);
+                    Engine.instance.sceneManager.runningScene.clearCanvaces();
+                    Engine.instance.sceneManager.loadScene('End Scene');
+                }
+
+                this.attackRate = 3.0;
+                this.skeletonAC.playAnimation('walkSprite');
+                this.attackDuration = 1.2;
+                this.refreashAttackRate = true;
+                this.currentState = CharacterData.WALK;
+                return; 
+            }
+        }
+
+        if(this.attackRate >= 0)
+        {
+            this.attackRate -= Engine.instance.deltaTime;
+            this.refreashAttackRate = false;
+        }
+
+        if(this.currentState == CharacterState.ATTACK)
+            return;
+
         if(Math.abs(this.player.transform.pos.x - this.gameObject.transform.pos.x + this.player.transform.scale.x - 80) > this.attackDist)
         {
+            this.skeletonAC.playAnimation('walkSprite');
             this.currentState = CharacterState.WALK;
             this.gameObject.transform.pos.x -= this.speed;
         }
 
-        else
+        else if(this.attackRate <= 0)
         {
             this.currentState = CharacterState.ATTACK;
-            this.skeletonAC.playAnimation('attackSprite');
         }
     }
 

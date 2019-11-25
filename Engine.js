@@ -9,6 +9,7 @@ class Engine
 
         this.inpt = new Input();
         this.sceneManager = new SceneManager();
+        this.audioManager = new AudioManager();
         
         this.previousScene;
 

@@ -32,6 +32,8 @@ class FireballScript extends Component
         this.fireballAC.addSpriteAnimation(this.fireballFord);
 
         this.fireballAC.playAnimation('fireballSprite');
+
+        AudioManager.instance.playAudio("fireBall sound");
     }
 
     update()

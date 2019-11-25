@@ -8,6 +8,7 @@ let engine;
 // -play sprite animation (and disable all the other sprite animations)
 // -remove sprite animation
 
+
 function openningScene()
 {
     let openningCanvas = new Canvas('Openning Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
@@ -40,7 +41,10 @@ function openningScene()
     let playMainGameGO = new GameObject('skeleton', new Vector2D(110, 50), new Vector2D(210, 100));
     let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
         Engine.instance.sceneManager.runningScene.clearCanvaces();
-        Engine.instance.sceneManager.loadScene('Main Scene');});
+        Engine.instance.sceneManager.loadScene('Main Scene');
+        AudioManager.instance.playAudio("ButtonClick.wav");
+        AudioManager.instance.stopAudio("background");
+    });
     
     playMainGameGO.addComponent(playMainGameBtn);
 
@@ -72,6 +76,8 @@ function openningScene()
     openningCanvas.addDrawObj(instructionsArrowKeysGO);
     openningCanvas.addDrawObj(instructionsAttackGO);
     openningCanvas.addDrawObj(playMainGameGO);
+    //var audioElement = new Audio('Castlevania Symphony of the Night OST Metamorphosis I.mp3');
+    //audioElement.play();
 }
 
 function mainGameScene()
@@ -131,12 +137,42 @@ function mainGameScene()
 
 function endScene()
 {
+    let endSceneCanvas = new Canvas('Ending Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    let canvasArray = [endSceneCanvas];
 
+    var endScene = new Scene('End Scene', canvasArray);
+    engine.sceneManager.addScene(endScene);
+    
+
+    // * Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), endSceneCanvas.size);
+    let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
+    backgroundSprite.name = 'backgroundSprite';
+
+
+    let backgroundAC = new AnimationController();
+    backgroundAC.addSpriteAnimation(backgroundSprite);
+    backgroundAC.playAnimation('backgroundSprite');
+
+
+    backgroundGO.addComponent(backgroundAC);
+
+    endSceneCanvas.addDrawObj(backgroundGO);
 }
 
 engine = new Engine();
+
+//! remove later
+AudioManager.instance.addAudio("background", new Audio("Castlevania Symphony of the Night OST Metamorphosis I.mp3"));
+AudioManager.instance.addAudio("fireBall sound", new Audio("fireballSpawn.wav"));
+AudioManager.instance.addAudio("ButtonClick.wav", new Audio("ButtonClick.wav"));
+AudioManager.instance.addAudio("ghost attack", new Audio("Ghost Attack Sound.wav"));
+AudioManager.instance.playAudio("background");
+
 mainGameScene();
 openningScene();
+endScene();
 engine.initDefaultFramerate();
 requestAnimationFrame(Engine.instance.run);
 
@@ -149,8 +185,16 @@ requestAnimationFrame(Engine.instance.run);
 //* https://www.emugifs.net/guilty-gear-xx-reload-arcade-game-animated-background-sprite-stages/
 //* https://www.emugifs.net/wp-content/uploads/2018/12/Guilty-Gear-XX-Reload-Arcade-Video-Game-2002-Sammy-Backgrounds-Stages-Testament-Sprites.gif
 //* http://static3.wikia.nocookie.net/__cb20121229200354/browserquest/images/9/9f/Play_Button.png
+//* https://gfycat.com/vagueearnesthoverfly
+//* https://freesound.org/people/Julien%20Matthey/sounds/105016/
+
+//*https://ezgif.com/gif-to-apng/ezgif-6-d874d2743f14.gif
 
 //* https://www.w3schools.com/graphics/canvas_text.asp
+//* https://freesound.org/people/annabloom/sounds/219069/
+//* https://www.youtube.com/watch?v=EjVoUFrdYFQ
+//* https://freesound.org/people/STAudio/sounds/490515/
+
     /*
 
 
