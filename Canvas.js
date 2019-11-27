@@ -13,15 +13,21 @@ class Canvas
         this.c = document.createElement('canvas');
         this.c.id = id;
 
-        this.size;
         this.setSize(size);
 
-        var body = document.getElementsByTagName("body")[0];
-        body.appendChild(this.c);
+        this.c.className = "gameCanvas";
+        this.c.style.width = "100%";
+        this.c.style.height = "100%";
 
-        this.c.style.left = "0px";
-        this.c.style.top = "0px";
-        this.c.style.position =  "absolute";
+        //Create game area
+        let gameArea = document.createElement("div");
+        gameArea.className = "gameArea";
+        gameArea.style.position = "absolute";
+        gameArea.style.top = "50%";
+        gameArea.style.left = "50%";
+
+        document.getElementById("body").appendChild(gameArea);
+        gameArea.appendChild(this.c);
     }
 
     constructor(id, size, drawObjs)
@@ -46,6 +52,37 @@ class Canvas
         {
             drawObjs[i].setCanvas = this;
         }
+
+/*
+        var gameArea = document.querySelectorAll("body div.gameArea");  //body div.gameArea
+
+        var widthToHeight = 16 / 9;
+
+        var newWidth = window.innerWidth;
+        var newHeight = window.innerHeight;
+
+        var newWidthToHeight = newWidth / newHeight;
+
+        if (newWidthToHeight > widthToHeight) {
+            // window width is too wide relative to desired game width
+            newWidth = newHeight * widthToHeight;
+            gameArea[SceneManager.sceneNumber].style.height = newHeight + 'px';
+            gameArea[SceneManager.sceneNumber].style.width = newWidth + 'px';
+          } else { // window height is too high relative to desired game height
+            newHeight = newWidth / widthToHeight;
+            gameArea[SceneManager.sceneNumber].style.width = newWidth + 'px';
+            gameArea[SceneManager.sceneNumber].style.height = newHeight + 'px';
+          }
+
+          gameArea[SceneManager.sceneNumber].style.marginTop = (-newHeight / 2) + 'px';
+          gameArea[SceneManager.sceneNumber].style.marginLeft = (-newWidth / 2) + 'px';
+
+          gameArea[SceneManager.sceneNumber].style.fontSize = (newWidth / 400) + 'em';
+
+          this.c.width = newWidth;
+          this.c.height = newHeight;
+          */
+          
     }
 
     addDrawObj = function(drawObj)

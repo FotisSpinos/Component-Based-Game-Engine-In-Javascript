@@ -10,6 +10,7 @@ class Engine
         this.inpt = new Input();
         this.sceneManager = new SceneManager();
         this.audioManager = new AudioManager();
+        this.window = new Window();
         
         this.previousScene;
 
@@ -48,29 +49,3 @@ class Engine
         requestAnimationFrame(engine.run);
     }
 }
-        /*
-        if(timestamp < Engine.instance.lastFrameTime + (1000 / Engine.instance.maxFps))
-            requestAnimationFrame(Engine.instance.run);
-
-        Engine.instance.deltaTime += timestamp - Engine.instance.lastFrameTime;
-        Engine.instance.lastFrameTime = timestamp;
-
-        let scene = SceneManager.runningScene;
-
-        
-        console.log("deltaTime: " + Engine.instance.deltaTime);
-        console.log("timestamp: " + timestamp); 
-        console.log("lastFrameTime" + Engine.instance.lastFrameTime);
-
-        while(Engine.instance.deltaTime >= Engine.instance.timestep)
-        {
-            Engine.instance.deltaTime -= Engine.instance.timestep;
-            scene.update();
-        }
-
-        console.log("update completed");
-        scene.clearCanvaces();
-        scene.render();
-        requestAnimationFrame(Engine.instance.run);
-    }
-    */

@@ -22,6 +22,9 @@ class Button extends Component
         if(Input.instance.buttonDown)
             return;        
 
+        let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect();
+
+
         let topLeft = new Vector2D(this.gameObject.transform.pos.x, 
             this.gameObject.transform.pos.y + this.gameObject.transform.scale.y);
 
@@ -34,10 +37,10 @@ class Button extends Component
         let bottomRight = new Vector2D(this.gameObject.transform.pos.x + this.gameObject.transform.scale.x, 
             this.gameObject.transform.pos.y);
             
-        if(Input.instance.onMouseUpPos.x > bottomLeft.x &&
-            Input.instance.onMouseUpPos.x < bottomRight.x && 
-            Input.instance.onMouseUpPos.y > bottomRight.y &&
-            Input.instance.onMouseUpPos.y < topRight.y)
+        if(Input.instance.onMouseUpPos.x - canvasOffset.left > bottomLeft.x &&
+            Input.instance.onMouseUpPos.x - canvasOffset.left < bottomRight.x + canvasOffset.left && 
+            Input.instance.onMouseUpPos.y - canvasOffset.top > bottomRight.y &&
+            Input.instance.onMouseUpPos.y -  canvasOffset.top < topRight.y)
             this.onClickFunction();
     }
 

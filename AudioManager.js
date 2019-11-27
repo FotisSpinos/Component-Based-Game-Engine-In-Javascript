@@ -4,6 +4,7 @@ static instance;
 
     constructor()
     {
+        AudioManager.instance = this;
         this.enabled = false;
         this.audios = [];
         this.audioNames = [];
@@ -15,15 +16,11 @@ static instance;
 
             AudioManager.instance.enabled = true;
             
+            
             if(AudioManager.instance.audioNames == null)
                 return;
-            //for(let i = 0; i < AudioManager.instance.audios.length; i++)
-            //{
-                AudioManager.instance.playAudio(AudioManager.instance.audioNames[0]);
-            //}
+            AudioManager.instance.playAudio(AudioManager.instance.audioNames[0]);
         })
-
-        AudioManager.instance = this;
     }
 
     addAudio(audioName, audio)

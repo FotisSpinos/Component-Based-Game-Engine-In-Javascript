@@ -1,10 +1,14 @@
 //The Scene containing game objects updated and rendered during runtime
 class Scene
 {
+    static sceneNumber = 0;
+
     constructor(id, canvaces)
     {
         this.name = id;
         this.canvaces = canvaces;
+        this.index = Scene.sceneNumber;
+        Scene.sceneNumber++;
     }
 
     removeCanvas = function(id)

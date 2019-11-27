@@ -7,6 +7,7 @@ class GameObject
 
         // Add transform component
         this.transform = new Transform(pos, scale);
+
         this.addComponent(this.transform);
 
         // Add name and tag
