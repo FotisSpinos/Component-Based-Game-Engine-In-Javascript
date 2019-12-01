@@ -18,7 +18,6 @@ class Button extends Component
     //* check if the button is clicked
     isClicked()
     {
-        console.log(Input.instance.keys);
         //! temporary for presentation
         if(Input.instance.keys[70])
         {

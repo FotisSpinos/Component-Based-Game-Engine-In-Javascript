@@ -24,8 +24,7 @@ class EndSceneInit extends Component
             SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreValueTextGO);
         }
         
-        //scoreValueTextGO.getComponent(EngineText).text = SceneManager.scenes[1].canvaces[0].
-
+        scoreValueTextGO.getComponent(EngineText).text = GameMaster.getInstance().scoreValueTextComp.text;
         //* play background audio
         AudioManager.instance.playAudio("end scene background song");
     }

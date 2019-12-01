@@ -28,6 +28,7 @@ class PlayerScript extends Component
         this.walkForwardSprite;
         this.attackSprite;
         this.playerAC;
+        this.lastWalkAnim
 
         // define current state
         this.currentState = CharacterState.WALK;
@@ -41,12 +42,12 @@ class PlayerScript extends Component
         this.attackRateStore = 1.0;
 
         //fireball spawn index img
-        this.fireballSpawnIndexImg - 3;
-
-        this.lastWalkAnim;
+        this.fireballSpawnIndexImg - 3;;
 
         this.health = 3;
         this.score = 0;
+
+        //GameMaster.getInstance().player = this.gameObject;
     }
 
     start()

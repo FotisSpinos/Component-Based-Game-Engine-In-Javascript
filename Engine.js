@@ -36,6 +36,8 @@ class Engine
             scene.onLoad();
             engine.previousScene.onExit();
             engine.previousScene.clearCanvaces();
+
+            GameMaster.getInstance().update();
         }
 
         engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;

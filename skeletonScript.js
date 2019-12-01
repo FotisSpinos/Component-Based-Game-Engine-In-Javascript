@@ -140,8 +140,6 @@ class SkeletonScript extends Component
             // check if character is alive
             if(this.health == 0)
             {
-                this.player.getComponent(PlayerScript).score++;
-
                 let currentScore = 0;
 
                 currentScore = parseInt(this.scoreValueText.getComponent(EngineText).text);

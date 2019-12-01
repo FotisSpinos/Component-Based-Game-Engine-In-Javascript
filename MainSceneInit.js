@@ -40,6 +40,7 @@ class MainSceneInit extends Component
         else
         {
             skeleton.transform.pos = new Vector2D(960, 633);
+            skeleton.getComponent(SkeletonScript).health = 2;
         }
 
         if(skeleton2 == null)
@@ -57,6 +58,7 @@ class MainSceneInit extends Component
         else
         {
             skeleton2.transform.pos = new Vector2D(1300, 633);
+            skeleton2.getComponent(SkeletonScript).health = 2;
         }
 
         if(player == null)
