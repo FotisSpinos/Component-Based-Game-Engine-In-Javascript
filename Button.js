@@ -18,36 +18,46 @@ class Button extends Component
     //* check if the button is clicked
     isClicked()
     {
+        console.log(Input.instance.keys);
+        //! temporary for presentation
+        if(Input.instance.keys[70])
+        {
+            this.onClickFunction();
+            return;
+        }
+
         //return if the button is pressed
         if(Input.instance.buttonDown)
             return;        
 
-        let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect();
+        let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect() ;
 
 
-        let topLeft = new Vector2D(this.gameObject.transform.pos.x, 
-            this.gameObject.transform.pos.y + this.gameObject.transform.scale.y);
+        let topLeft = new Vector2D(this.gameObject.transform.pos.x , 
+            (this.gameObject.transform.pos.y + this.gameObject.transform.scale.y));
 
-        let topRight = new Vector2D(this.gameObject.transform.pos.x + this.gameObject.transform.scale.x, 
-            this.gameObject.transform.pos.y + this.gameObject.transform.scale.y);
+        let topRight = new Vector2D((this.gameObject.transform.pos.x + this.gameObject.transform.scale.x), 
+            (this.gameObject.transform.pos.y + this.gameObject.transform.scale.y));
 
-        let bottomLeft = new Vector2D(this.gameObject.transform.pos.x, 
+        let bottomLeft = new Vector2D((this.gameObject.transform.pos.x), 
+            (this.gameObject.transform.pos.y));
+
+        let bottomRight = new Vector2D((this.gameObject.transform.pos.x + this.gameObject.transform.scale.x) / (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
             this.gameObject.transform.pos.y);
 
-        let bottomRight = new Vector2D(this.gameObject.transform.pos.x + this.gameObject.transform.scale.x, 
-            this.gameObject.transform.pos.y);
-            
         if(Input.instance.onMouseUpPos.x - canvasOffset.left > bottomLeft.x &&
-            Input.instance.onMouseUpPos.x - canvasOffset.left < bottomRight.x + canvasOffset.left && 
+            Input.instance.onMouseUpPos.x - canvasOffset.left < bottomRight.x && 
             Input.instance.onMouseUpPos.y - canvasOffset.top > bottomRight.y &&
             Input.instance.onMouseUpPos.y -  canvasOffset.top < topRight.y)
             this.onClickFunction();
+
+        
     }
 
     //* functionality when the button is clicked
     onClick()
     {
-        //* inherit class to provide functionality
+        
         
     }
 
@@ -61,3 +71,39 @@ class Button extends Component
         
     }
 }
+
+/*
+        if(Input.instance.buttonDown)
+            return;        
+
+        let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect();
+
+
+        let topLeft = new Vector2D(this.gameObject.transform.pos.x * (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
+            (this.gameObject.transform.pos.y + this.gameObject.transform.scale.y) * (this.gameObject.canvas.c.getBoundingClientRect().height / 456.7));
+
+        let topRight = new Vector2D((this.gameObject.transform.pos.x + this.gameObject.transform.scale.x) * (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
+            (this.gameObject.transform.pos.y + this.gameObject.transform.scale.y) * (this.gameObject.canvas.c.getBoundingClientRect().height / 456.7));
+
+        let bottomLeft = new Vector2D((this.gameObject.transform.pos.x) * (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
+            (this.gameObject.transform.pos.y) * (this.gameObject.canvas.c.getBoundingClientRect().height / 456.7));
+
+        let bottomRight = new Vector2D((this.gameObject.transform.pos.x + this.gameObject.transform.scale.x) * (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
+            this.gameObject.transform.pos.y * (this.gameObject.canvas.c.getBoundingClientRect().height / 456.7));
+            
+
+            //let mousePos = new Vector2D((Input.instance.onMouseUpPos.x - canvasOffset.left) * (this.gameObject.canvas.c.getBoundingClientRect().width / 1679), 
+            //    (Input.instance.onMouseUpPos.y - canvasOffset.top) * (this.gameObject.canvas.c.getBoundingClientRect().height / 456.7));
+
+                //mousePos.print();
+
+                console.log(this.gameObject.canvas.c.getBoundingClientRect().width);
+                console.log(this.gameObject.canvas.c.getBoundingClientRect().height);
+
+        if(Input.instance.onMouseUpPos.x - canvasOffset.left > bottomLeft.x &&
+            Input.instance.onMouseUpPos.x - canvasOffset.left < bottomRight.x && 
+            Input.instance.onMouseUpPos.y - canvasOffset.top > bottomRight.y &&
+            Input.instance.onMouseUpPos.y -  canvasOffset.top < topRight.y)
+            this.onClickFunction();
+
+*/

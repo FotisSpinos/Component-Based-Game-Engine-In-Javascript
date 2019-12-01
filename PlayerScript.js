@@ -38,7 +38,7 @@ class PlayerScript extends Component
 
         // attack rate
         this.attackRate = 0;
-        this.attackRateStore = 3.0;
+        this.attackRateStore = 1.0;
 
         //fireball spawn index img
         this.fireballSpawnIndexImg - 3;
@@ -46,6 +46,7 @@ class PlayerScript extends Component
         this.lastWalkAnim;
 
         this.health = 3;
+        this.score = 0;
     }
 
     start()
@@ -99,9 +100,6 @@ class PlayerScript extends Component
         // set default sprite
         this.playerAC.playAnimation('walkForwardSprite');
         this.playerAC.pauseAnimation('walkForwardSprite');
-
-        //let squareShape = new SquareShape('yellow', new Vector2D(140, 180));
-        //this.gameObject.addComponent(squareShape, new Vector2D(1, 1));
     }
 
     createFireBall()
@@ -128,6 +126,8 @@ class PlayerScript extends Component
         let fireball = new GameObject('fireball', spawnPos, new Vector2D(100, 100));
         let fireballCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(100, 80)); 
         let fireBallScript = new FireballScript(fbDir);
+
+        fireball.tag = "fireball";
 
         fireball.addComponent(fireballCollider);
         fireball.addComponent(fireBallScript);
@@ -156,6 +156,7 @@ class PlayerScript extends Component
                 if(this.playerMovement + this.gameObject.transform.pos.x > 10 &&
                     Math.abs(this.playerMovement + this.collision.collisionDir.x) >= Math.abs(this.collision.collisionDir.x))
                     this.gameObject.transform.pos.x += this.playerMovement;
+
             }
 
             this.attackRate -= Engine.instance.deltaTime;
@@ -173,9 +174,6 @@ class PlayerScript extends Component
                 this.attackSprite.reset();
             }
         }
-
-        if(this.currentState == CharacterState.ATTACK)
-            console.log(this.playerAC.activeAnimation);
 
         if(this.currentState == CharacterState.ATTACK && 
             this.playerAC.activeAnimation.currentStepsX == 5 && 
@@ -227,7 +225,7 @@ class PlayerScript extends Component
     onCollisionEnter(collision)
     {
         //* Check if we have collided with the skeleton
-        if(collision.gameObject.id == 'skeleton')
+        if(collision.gameObject.tag == 'skeleton')
             this.collision = collision;
     }
 }

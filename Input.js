@@ -17,6 +17,19 @@ class Input
         Input.instance = this;
     }   
 
+    resetCursorInputs()
+    {
+        Input.instance.onMouseUpPos.x = 0;
+        Input.instance.onMouseUpPos.y = 0;
+
+        Input.instance.buttonDown = false;
+
+        Input.instance.onMouseDownPos.x = 0;
+        Input.instance.onMouseDownPos.y = 0;
+
+        Input.instance.buttonDown = true;
+    }
+
     updateAxis()
     {
         for(var i = 0; i < Input.axis.length; i++)

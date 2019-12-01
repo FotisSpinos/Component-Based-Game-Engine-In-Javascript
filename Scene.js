@@ -63,6 +63,22 @@ class Scene
         }
     }
 
+    onLoad = function()
+    {
+        for(var i = 0; i < this.canvaces.length; i++)
+        {
+            this.canvaces[i].onSceneLoad();
+        }
+    }
+
+    onExit = function()
+    {
+        for(var i = 0; i < this.canvaces.length; i++)
+        {
+            this.canvaces[i].onSceneExit();
+        }
+    }
+
     collisionCheck = function()
     {
         for(var i = 0; i < this.canvaces.length; i++)

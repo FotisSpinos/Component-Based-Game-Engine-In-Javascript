@@ -52,36 +52,6 @@ class Canvas
         {
             drawObjs[i].setCanvas = this;
         }
-
-/*
-        var gameArea = document.querySelectorAll("body div.gameArea");  //body div.gameArea
-
-        var widthToHeight = 16 / 9;
-
-        var newWidth = window.innerWidth;
-        var newHeight = window.innerHeight;
-
-        var newWidthToHeight = newWidth / newHeight;
-
-        if (newWidthToHeight > widthToHeight) {
-            // window width is too wide relative to desired game width
-            newWidth = newHeight * widthToHeight;
-            gameArea[SceneManager.sceneNumber].style.height = newHeight + 'px';
-            gameArea[SceneManager.sceneNumber].style.width = newWidth + 'px';
-          } else { // window height is too high relative to desired game height
-            newHeight = newWidth / widthToHeight;
-            gameArea[SceneManager.sceneNumber].style.width = newWidth + 'px';
-            gameArea[SceneManager.sceneNumber].style.height = newHeight + 'px';
-          }
-
-          gameArea[SceneManager.sceneNumber].style.marginTop = (-newHeight / 2) + 'px';
-          gameArea[SceneManager.sceneNumber].style.marginLeft = (-newWidth / 2) + 'px';
-
-          gameArea[SceneManager.sceneNumber].style.fontSize = (newWidth / 400) + 'em';
-
-          this.c.width = newWidth;
-          this.c.height = newHeight;
-          */
           
     }
 
@@ -127,6 +97,22 @@ class Canvas
         for(var i = 0; i < this.drawObjs.length; i++)
         {
             this.drawObjs[i].renderComponents();
+        }
+    }
+
+    onSceneLoad = function()
+    {
+        for(var i = 0; i < this.drawObjs.length; i++)
+        {
+            this.drawObjs[i].onSceneLoad();
+        }
+    }
+
+    onSceneExit = function () 
+    {
+        for(var i = 0; i < this.drawObjs.length; i++)
+        {
+            this.drawObjs[i].onSceneExit();
         }
     }
 }

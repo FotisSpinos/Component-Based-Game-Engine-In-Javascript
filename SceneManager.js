@@ -25,7 +25,7 @@ class SceneManager
         this.scenes.push(scene);
 
         if(SceneManager.sceneNumber == null)
-        SceneManager.sceneNumber = 0;
+            SceneManager.sceneNumber = 0;
 
         this.sceneCounter = SceneManager.sceneNumber;
         SceneManager.sceneNumber++;

@@ -4,6 +4,7 @@ class FireballScript extends Component
     {
         super();
         this.speed = 5.0;
+        this.deleteBorder = 2000;
         this.dir = dir;
     }
 
@@ -42,6 +43,12 @@ class FireballScript extends Component
             this.gameObject.transform.pos.x += this.speed;
         else
             this.gameObject.transform.pos.x -= this.speed;
+
+        if(this.gameObject.transform.pos.x > this.deleteBorder || this.gameObject.transform.pos.x < -this.deleteBorder)
+        {
+            this.gameObject.canvas.removeDrawObj(this.gameObject);
+            console.log("destroy fireball");
+        }
     }
 
     render()

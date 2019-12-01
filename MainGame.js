@@ -1,8 +1,19 @@
+//*     PRIMARY
+//TODO increase pleayer attack speed
+//TODO introduce score 
+//TODO introduce health bar
+//TODO prepare presentation speech
+
+//*     SECONDARY
+//TODO introduce function to set resolution to the window class
+//TODO make skeleton moving in the oposite direction
+//TODO fix mouse position after scaling the window
+
 let engine;
 
 function openningScene()
 {
-    let openningCanvas = new Canvas('Openning Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    let openningCanvas = new Canvas('Openning Canvas', new Vector2D(1578, 969), []);
     let canvasArray = [openningCanvas];
 
     var openningScene = new Scene('Openning Scene', canvasArray);
@@ -10,13 +21,17 @@ function openningScene()
     
     Engine.instance.sceneManager.loadScene(openningScene.name);
 
-    let canvasSize = new Vector2D(openningCanvas.c.getBoundingClientRect().width, openningCanvas.c.getBoundingClientRect().height)
-    let canvasPos = new Vector2D(openningCanvas.c.getBoundingClientRect().left, openningCanvas.c.getBoundingClientRect().top);
+/************************************************************************************************************************/
+    // * start scene init
+    let sti = new StartSceneInit();
+    let stiGO = new GameObject('iniy', new Vector2D(0, 0),  new Vector2D(0, 0)); 
+
+    stiGO.addComponent(sti);
 
 /************************************************************************************************************************/
     // * Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), 
-    new Vector2D(canvasSize.x, canvasSize.y));
+    openningCanvas.size);
 
     let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
@@ -34,9 +49,6 @@ function openningScene()
     let playMainGameGO = new GameObject('skeleton', new Vector2D(110, 50), new Vector2D(210, 100));
     let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
         AudioManager.instance.playAudio("ButtonClick.wav");
-        AudioManager.instance.stopAudio("background");
-        AudioManager.instance.playAudio("main game background song");
-        Engine.instance.sceneManager.runningScene.clearCanvaces();
         Engine.instance.sceneManager.loadScene("Main Scene");
     });
     
@@ -70,13 +82,12 @@ function openningScene()
     openningCanvas.addDrawObj(instructionsArrowKeysGO);
     openningCanvas.addDrawObj(instructionsAttackGO);
     openningCanvas.addDrawObj(playMainGameGO);
-    //var audioElement = new Audio('Castlevania Symphony of the Night OST Metamorphosis I.mp3');
-    //audioElement.play();
+    openningCanvas.addDrawObj(stiGO);
 }
 
 function mainGameScene()
 {
-    var mainGameCanvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    var mainGameCanvas = new Canvas('Gameplay Canvas', new Vector2D(1578, 969), []);
     var canvasArray = [mainGameCanvas];
     
     var mainScene = new Scene('Main Scene', canvasArray);
@@ -85,7 +96,7 @@ function mainGameScene()
 /************************************************************************************************************************/
 
     //* Create Background
-    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), new Vector2D(window.innerWidth, window.innerHeight));
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), mainGameCanvas.size);
     let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
     backgroundSprite.name = 'backgroundSprite';
@@ -97,31 +108,27 @@ function mainGameScene()
     backgroundGO.addComponent(backgroundAC);
 
 /************************************************************************************************************************/
+    //* Create Load Next Scene Trigger
+    let nextSceneTriggerGO = new GameObject('end scene trigger', new Vector2D(1500, 633), new Vector2D(180, 180));
+    let nextSceneTriggerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(130, 160));
+    let endSceenTrigger = new EndSceenTrigger('End Scene');
 
-    //* Create Character
-    let player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200));  
-    let playerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(140, 180)); 
-    let ps = new PlayerScript();
-
-    player.addComponent(ps);
-    player.addComponent(playerCollider);
+    nextSceneTriggerGO.addComponent(nextSceneTriggerCollider);
+    nextSceneTriggerGO.addComponent(endSceenTrigger);
 
 /************************************************************************************************************************/
 
-    //* Create Skeleton
-    let skeleton = new GameObject('skeleton', new Vector2D(960, 653), new Vector2D(180, 180));
-    let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
-    let ss = new SkeletonScript();
-
-    skeleton.addComponent(ss);
-    skeleton.addComponent(skeletonCollider);
+    // * create scene initialization 
+    let sceenInit = new MainSceneInit();
+    let sceneInitGo = new GameObject('init', new Vector2D(0, 0), mainGameCanvas.size);
+    sceneInitGo.addComponent(sceenInit);
 
 /************************************************************************************************************************/
 
     //* Add GO's to canvas
     mainGameCanvas.addDrawObj(backgroundGO);
-    mainGameCanvas.addDrawObj(player);
-    mainGameCanvas.addDrawObj(skeleton);
+    mainGameCanvas.addDrawObj(nextSceneTriggerGO)
+    mainGameCanvas.addDrawObj(sceneInitGo);
 
 /************************************************************************************************************************/
     //* Create Axis
@@ -130,41 +137,69 @@ function mainGameScene()
 
 function endScene()
 {
-    let endSceneCanvas = new Canvas('Ending Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
+    let endSceneCanvas = new Canvas('Ending Canvas', new Vector2D(1578, 969), []);
     let canvasArray = [endSceneCanvas];
 
     var endScene = new Scene('End Scene', canvasArray);
     engine.sceneManager.addScene(endScene);
-    
+
+/************************************************************************************************************************/
+    // * create scene initialization 
+    let sceenInit = new EndSceneInit();
+    let sceneInitGo = new GameObject('init', new Vector2D(0, 0), new Vector2D(0, 0));
+    sceneInitGo.addComponent(sceenInit);
 
     // * Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), endSceneCanvas.size);
-    let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
-    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
+    let backgroundImg = new EngineImage('End Scene Background (2).png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(13500  / 27, 475), new Vector2D(0, 0), 0.1, 0, [26]);
     backgroundSprite.name = 'backgroundSprite';
-
 
     let backgroundAC = new AnimationController();
     backgroundAC.addSpriteAnimation(backgroundSprite);
     backgroundAC.playAnimation('backgroundSprite');
 
+    //* Create score text
+    let scoreGO = new GameObject('scoreText', new Vector2D(1200, 80), new Vector2D(200, 200));
+    let scoreText = new EngineText("Score: ");
+
+    scoreGO.addComponent(scoreText);
+
+    //* play background audio
+    AudioManager.instance.playAudio("end scene background song");
+
+
+    // *Create play game button
+    let playMainGameGO = new GameObject('main game button game object', new Vector2D(110, 50), new Vector2D(210, 100));
+    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
+        AudioManager.instance.playAudio("ButtonClick.wav");
+        Engine.instance.sceneManager.loadScene("Openning Scene");
+    });
+        
+
+    //Engine.instance.sceneManager.loadScene(endScene.name);
 
     backgroundGO.addComponent(backgroundAC);
+    playMainGameGO.addComponent(playMainGameBtn);
 
     endSceneCanvas.addDrawObj(backgroundGO);
+    endSceneCanvas.addDrawObj(playMainGameGO);
+    endSceneCanvas.addDrawObj(scoreGO);
+
+    endSceneCanvas.addDrawObj(sceneInitGo);
 }
 
 
 engine = new Engine();
 
 //* Add sounds
-AudioManager.instance.addAudio("background", new Audio("Castlevania Symphony of the Night OST Metamorphosis I.mp3"));
-AudioManager.instance.addAudio("fireBall sound", new Audio("fireballSpawn.wav"));
-AudioManager.instance.addAudio("ButtonClick.wav", new Audio("ButtonClick.wav"));
-AudioManager.instance.addAudio("ghost attack", new Audio("Ghost Attack Sound.wav"));
-AudioManager.instance.addAudio("main game background song", new Audio("Necropolis - Heroes of Might and Magic IV (4) OST.mp3"));
+AudioManager.instance.addAudio(new EngineAudio("background", "Castlevania Symphony of the Night OST Metamorphosis I.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("fireBall sound", "fireballSpawn.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ButtonClick.wav", "ButtonClick.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ghost attack", "Ghost Attack Sound.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("main game background song", "Necropolis - Heroes of Might and Magic IV (4) OST.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("end scene background song", "Castlevania SOTN Lost Painting.mp3", true));
 
-AudioManager.instance.playAudio("background");
 
 let win = new Window();
 
@@ -175,6 +210,9 @@ mainGameScene();
 endScene();
 engine.initDefaultFramerate();
 requestAnimationFrame(Engine.instance.run);
+
+//TODO culc mouse position once the window changes
+//TODO hardcode the background size to your window size so that the window can adjust to different resolitions 
 
 
 //* https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
@@ -187,15 +225,19 @@ requestAnimationFrame(Engine.instance.run);
 //* http://static3.wikia.nocookie.net/__cb20121229200354/browserquest/images/9/9f/Play_Button.png
 //* https://gfycat.com/vagueearnesthoverfly
 //* https://freesound.org/people/Julien%20Matthey/sounds/105016/
-
+//* https://giphy.com/gifs/animated-pixel-art-pixels-Qz5OFEwPwRprq
 //*https://ezgif.com/gif-to-apng/ezgif-6-d874d2743f14.gif
+//* https://brullov-studios.itch.io/2d-platformer-asset-pack-castle-of-despair
 
 //* https://www.w3schools.com/graphics/canvas_text.asp
 //* https://freesound.org/people/annabloom/sounds/219069/
 //* https://www.youtube.com/watch?v=EjVoUFrdYFQ
 //* https://freesound.org/people/STAudio/sounds/490515/
 //* https://www.youtube.com/watch?v=Mt2paelUYwo
+//* https://www.youtube.com/watch?v=YhIf_zV6yK0
+//* https://66.media.tumblr.com/f3ed75dbaa538fa583ad99dde36b1408/tumblr_n4w85syp811s559q7o8_500.gifv
 
+//*https://www.youtube.com/watch?v=IYwS6481oQk
     /*
 
 

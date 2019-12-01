@@ -4,10 +4,12 @@ static instance;
 
     constructor()
     {
-        AudioManager.instance = this;
+        if(AudioManager.instance == null)
+            AudioManager.instance = this;
+            
         this.enabled = false;
-        this.audios = [];
-        this.audioNames = [];
+
+        this.engineAudios = [];
 
         document.body.addEventListener("click", function () 
         {            
@@ -16,20 +18,25 @@ static instance;
 
             AudioManager.instance.enabled = true;
             
-            
-            if(AudioManager.instance.audioNames == null)
-                return;
-            AudioManager.instance.playAudio(AudioManager.instance.audioNames[0]);
+            AudioManager.instance.playAudio(AudioManager.instance.engineAudios[0].audioName);
         })
     }
 
-    addAudio(audioName, audio)
+    addAudio(engineAudio)
     {
        if(AudioManager.instance.enabled)
-        return;
+            return;
 
-        AudioManager.instance.audios.push(audio);
-        AudioManager.instance.audioNames.push(audioName);
+        AudioManager.instance.engineAudios.push(engineAudio);
+
+        if(engineAudio.looped)
+        {
+            engineAudio.audio.addEventListener('ended', function() 
+            {
+                engineAudio.currentTime = 0;
+                engineAudio.audio.play();
+            });
+        }
     }
 
     playAudio(audioName)
@@ -37,11 +44,11 @@ static instance;
         if(!AudioManager.instance.enabled)
             return;
 
-        for(let i = 0; i < AudioManager.instance.audios.length; i++)
+        for(let i = 0; i < AudioManager.instance.engineAudios.length; i++)
         {
-            if(AudioManager.instance.audioNames[i] == audioName)
+            if(AudioManager.instance.engineAudios[i].audioName == audioName)
             {
-                AudioManager.instance.audios[i].play();
+                AudioManager.instance.engineAudios[i].audio.play();
                 return;
             }
         }
@@ -49,12 +56,12 @@ static instance;
 
     stopAudio(audioName)
     {
-        for(let i = 0; i < AudioManager.instance.audios.length; i++)
+        for(let i = 0; i < AudioManager.instance.engineAudios.length; i++)
         {
-            if(AudioManager.instance.audioNames[i] == audioName)
+            if(AudioManager.instance.engineAudios[i].audioName == audioName)
             {
-                AudioManager.instance.audios[i].pause();
-                AudioManager.instance.audios[i].currentTime = 0;
+                AudioManager.instance.engineAudios[i].audio.pause();
+                AudioManager.instance.engineAudios[i].audio.currentTime = 0;
             }
         }
     }

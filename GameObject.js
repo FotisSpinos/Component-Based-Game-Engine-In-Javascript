@@ -119,6 +119,22 @@ class GameObject
         }
     }    
 
+    onSceneLoad = function()
+    {
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].onSceneLoad();
+        }
+    }
+
+    onSceneExit = function()
+    {
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].onSceneExit();
+        }
+    }
+
     // Finds a game object in the scene from it's id
     static find(id)
     {
@@ -134,5 +150,26 @@ class GameObject
                     return canvaces[c].drawObjs[i];
             }
         }
+    }
+
+    static findObjsWithTag(tag)
+    {
+        if(SceneManager.instance == null)
+            return null;
+        var canvaces = SceneManager.instance.runningScene.canvaces;
+        let output = [];
+        
+        for(var c = 0; c < canvaces.length; c++)
+        {
+            for(var i = 0; i < canvaces[c].drawObjs.length; i++)
+            {
+                if(tag == canvaces[c].drawObjs[i].tag)
+                {
+                    output.push(canvaces[c].drawObjs[i]);
+                }
+            }
+        }
+
+        return output;
     }
 }

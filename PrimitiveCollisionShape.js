@@ -145,7 +145,7 @@ class CircleCollider extends Collider
         this.pos = Vector2D.zero;
     }
 
-    start()
+    onSceneLoad()
     {
         this.pos = this.gameObject.transform.pos.addVec(this.offset);
     }
@@ -167,7 +167,7 @@ class SquareCollider extends Collider
         this.pos = Vector2D.zero;
     }
 
-    start()
+    onSceneLoad()
     {
         this.updatePos();
     }

@@ -6,7 +6,6 @@ class Window
     {
         if(Window.instance == null)
             Window.instance = this;
-
             window.addEventListener("resize", this.resizeCanvaces);
     }
 
@@ -16,13 +15,14 @@ class Window
     {
         let currentScene = SceneManager.instance.runningScene;
         let sceneIndex = 0;
+
         if(currentScene != null)
             sceneIndex = currentScene.index;
              
 
         var gameArea = document.querySelectorAll("body div.gameArea");  //resieved all game areas for each scene
 
-        var widthToHeight = 4 / 3; //16 / 9;
+        var widthToHeight = 16 / 9;
 
         var newWidth = window.innerWidth;
         var newHeight = window.innerHeight;
@@ -50,10 +50,6 @@ class Window
             return;
           let sceneCanvaces = SceneManager.instance.runningScene.canvaces;
 
-          for(let i = 0; i < sceneCanvaces.length; i++)
-          {
-              sceneCanvaces[i].c.width = newWidth;              
-              sceneCanvaces[i].c.height = newHeight;
-          }
+
     }
 }

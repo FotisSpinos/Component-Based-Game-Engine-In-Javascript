@@ -32,7 +32,11 @@ class Engine
         let engine = Engine.instance;
         var scene = SceneManager.instance.runningScene;
         if(scene != engine.previousScene && engine.previousScene != null)
+        {
+            scene.onLoad();
+            engine.previousScene.onExit();
             engine.previousScene.clearCanvaces();
+        }
 
         engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
         engine.lastFrameTime = Date.now();
@@ -43,6 +47,7 @@ class Engine
             engine.inpt.updateAxis();
             scene.update();
             scene.render();
+            engine.inpt.resetCursorInputs();
         }
         
         engine.previousScene = scene;

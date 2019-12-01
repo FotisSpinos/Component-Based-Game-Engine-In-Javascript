@@ -29,4 +29,14 @@ class Component
     {
 
     }
+
+    onSceneLoad()
+    {
+        
+    }
+
+    onSceneExit()
+    {
+        
+    }
 }

@@ -64,7 +64,14 @@ class SkeletonScript extends Component
     {
         //* make sure that the player exists in the map
         if(this.player == null)
+        {
             this.player = GameObject.find('player');
+            return;
+        }
+
+        if(this.scoreValueText == null)
+            this.scoreValueText = GameObject.find("scoreValueText");
+
 
         let playerDist = Math.abs(this.player.transform.pos.x - this.gameObject.transform.pos.x + this.player.transform.scale.x / 2);
         
@@ -81,8 +88,6 @@ class SkeletonScript extends Component
                 playerScirpt.health--;
                 if(playerScirpt.health == 0)
                 {
-                    this.gameObject.canvas.removeDrawObj(this.player);
-                    Engine.instance.sceneManager.runningScene.clearCanvaces();
                     Engine.instance.sceneManager.loadScene('End Scene');
                 }
 
@@ -135,6 +140,14 @@ class SkeletonScript extends Component
             // check if character is alive
             if(this.health == 0)
             {
+                this.player.getComponent(PlayerScript).score++;
+
+                let currentScore = 0;
+
+                currentScore = parseInt(this.scoreValueText.getComponent(EngineText).text);
+                currentScore += 100;
+                this.scoreValueText.getComponent(EngineText).text = currentScore.toString();
+
                 this.gameObject.canvas.removeDrawObj(this.gameObject);
             }
         }
