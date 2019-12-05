@@ -1,15 +1,45 @@
 //*     PRIMARY
-//TODO increase pleayer attack speed
-//TODO introduce score 
 //TODO introduce health bar
-//TODO prepare presentation speech
-
-//*     SECONDARY
-//TODO introduce function to set resolution to the window class
-//TODO make skeleton moving in the oposite direction
-//TODO fix mouse position after scaling the window
+//TODO fix bug with button
+//TODO fix bug with undefined score
 
 let engine;
+
+function playerInteractionScene()
+{
+    let interactionCheckerGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(0, 0));
+    let interactionChecker = new InteractionChecker();
+
+    interactionCheckerGO.addComponent(interactionChecker);
+
+    let interactionCanvas = new Canvas('Interaction Canvas', new Vector2D(1578, 969), []);
+    let canvasArray = [interactionCanvas];
+
+    let interactionScene = new Scene('interaction Scene', canvasArray);
+    engine.sceneManager.addScene(interactionScene);
+
+    interactionCanvas.addDrawObj(interactionCheckerGO);
+
+    Engine.instance.sceneManager.loadScene(interactionScene.name);
+
+    //* Create Background
+    let backgroundGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(1578, 969));
+    let background = new EngineImage("InteractionBackgroundImage.png", 'background');
+
+    backgroundGO.addComponent(background);
+    
+
+    //* Create score text
+    let scoreGO = new GameObject('Click Screen Text', new Vector2D(1578 / 2 - 300, 969 - 300), new Vector2D(200, 200));
+    let scoreText = new EngineText("Click Screen To Play The Game");
+    scoreText.font = "40px Comic Sans MS";
+
+    scoreGO.addComponent(scoreText);
+
+
+    interactionCanvas.addDrawObj(backgroundGO);
+    interactionCanvas.addDrawObj(scoreGO);
+}
 
 function openningScene()
 {
@@ -18,8 +48,6 @@ function openningScene()
 
     var openningScene = new Scene('Openning Scene', canvasArray);
     engine.sceneManager.addScene(openningScene);
-    
-    Engine.instance.sceneManager.loadScene(openningScene.name);
 
 /************************************************************************************************************************/
     // * start scene init
@@ -205,6 +233,7 @@ let win = new Window();
 
 Engine.instance.sceneManager.loadScene('Openning Scene');
 
+playerInteractionScene();
 openningScene();
 mainGameScene();
 endScene();
@@ -226,8 +255,9 @@ requestAnimationFrame(Engine.instance.run);
 //* https://gfycat.com/vagueearnesthoverfly
 //* https://freesound.org/people/Julien%20Matthey/sounds/105016/
 //* https://giphy.com/gifs/animated-pixel-art-pixels-Qz5OFEwPwRprq
-//*https://ezgif.com/gif-to-apng/ezgif-6-d874d2743f14.gif
+//* https://ezgif.com/gif-to-apng/ezgif-6-d874d2743f14.gif
 //* https://brullov-studios.itch.io/2d-platformer-asset-pack-castle-of-despair
+//* https://i.imgur.com/y5aghDE.gif
 
 //* https://www.w3schools.com/graphics/canvas_text.asp
 //* https://freesound.org/people/annabloom/sounds/219069/
@@ -237,7 +267,8 @@ requestAnimationFrame(Engine.instance.run);
 //* https://www.youtube.com/watch?v=YhIf_zV6yK0
 //* https://66.media.tumblr.com/f3ed75dbaa538fa583ad99dde36b1408/tumblr_n4w85syp811s559q7o8_500.gifv
 
-//*https://www.youtube.com/watch?v=IYwS6481oQk
+//* https://www.youtube.com/watch?v=IYwS6481oQk
+//* https://itch.io/t/246178/wip-2d-platformer-asset-pack-medieval-castle
     /*
 
 

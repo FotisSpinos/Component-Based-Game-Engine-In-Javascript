@@ -33,6 +33,7 @@ class EngineText extends Component
 
         canvasContext.font = this.font;
         canvasContext.fillStyle = this.color;
+        
         canvasContext.fillText(this.text, pos.x, pos.y);
     }
 }

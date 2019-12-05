@@ -51,8 +51,7 @@ class Canvas
         for(var i = 0; i < drawObjs.length; i++)
         {
             drawObjs[i].setCanvas = this;
-        }
-          
+        }          
     }
 
     addDrawObj = function(drawObj)

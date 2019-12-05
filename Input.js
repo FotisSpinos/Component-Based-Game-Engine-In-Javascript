@@ -6,7 +6,7 @@ class Input
     constructor()
     {
         this.keys = [];
-        this.buttonDown = true;
+        this.buttonDown = false; //! remane to mouseDown
         this.onMouseDownPos = new Vector2D(0,0);
         this.onMouseUpPos = new Vector2D(0,0);
 
@@ -14,8 +14,17 @@ class Input
         document.addEventListener('keyup', this.keyUp, false);
         document.addEventListener('mousedown', this.mouseDown, false);
         document.addEventListener('mouseup', this.mouseUp, false);
-        Input.instance = this;
+
+        if(Input.instance == null)
+            Input.instance = this;
     }   
+
+    getInstance()
+    {
+        if(Input.instance == null)
+            Input.instance = new Instance();
+        return Input.instance;
+    }
 
     resetCursorInputs()
     {
@@ -26,8 +35,6 @@ class Input
 
         Input.instance.onMouseDownPos.x = 0;
         Input.instance.onMouseDownPos.y = 0;
-
-        Input.instance.buttonDown = true;
     }
 
     updateAxis()

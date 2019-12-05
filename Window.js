@@ -29,27 +29,27 @@ class Window
 
         var newWidthToHeight = newWidth / newHeight;
 
-        if (newWidthToHeight > widthToHeight) {
-            // window width is too wide relative to desired game width
+        if (newWidthToHeight > widthToHeight) 
+        {
             newWidth = newHeight * widthToHeight;
             gameArea[sceneIndex].style.height = newHeight + 'px';
             gameArea[sceneIndex].style.width = newWidth + 'px';
-          } else { // window height is too high relative to desired game height
+        } 
+        else 
+        {
             newHeight = newWidth / widthToHeight;
             gameArea[sceneIndex].style.width = newWidth + 'px';
             gameArea[sceneIndex].style.height = newHeight + 'px';
-          }
+        }
 
-          gameArea[sceneIndex].style.marginTop = (-newHeight / 2) + 'px';
-          gameArea[sceneIndex].style.marginLeft = (-newWidth / 2) + 'px';
+        gameArea[sceneIndex].style.marginTop = (-newHeight / 2) + 'px';
+        gameArea[sceneIndex].style.marginLeft = (-newWidth / 2) + 'px';
 
-          gameArea[sceneIndex].style.fontSize = (newWidth / 400) + 'em';
-
-
-          if(SceneManager.instance.runningScene == null)
-            return;
-          let sceneCanvaces = SceneManager.instance.runningScene.canvaces;
-
-
+        gameArea[sceneIndex].style.fontSize = (newWidth / 400) + 'em';
+        
+        if(SceneManager.instance.runningScene == null)
+          return;
+        
+        let sceneCanvaces = SceneManager.instance.runningScene.canvaces;
     }
 }

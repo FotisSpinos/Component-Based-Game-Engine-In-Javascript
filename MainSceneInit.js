@@ -10,15 +10,22 @@ class MainSceneInit extends Component
     {
         let skeleton;
         let skeleton2;
+        let skeleton3;
+
         let player;
         let scoreTextGO;
         let scoreValueTextGO;
+
+        let healthBarBackground;
+        let healthBarSlider;
+        let healthText;
 
         //* 
         if(!this.firstRun)
         {
             skeleton = GameObject.find("skeleton");
             skeleton2 = GameObject.find("skeleton2");
+            skeleton3 = GameObject.find("skeleton3");
             player =  GameObject.find("player")
             scoreTextGO = GameObject.find("scoreText");
             scoreValueTextGO = GameObject.find("scoreValueText");
@@ -27,33 +34,18 @@ class MainSceneInit extends Component
         //* spawn game objects
         if(skeleton == null)
         {
-            skeleton = new GameObject('skeleton', new Vector2D(960, 633), new Vector2D(180, 180));
-            skeleton.tag = "skeleton";
-            let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
-            let ss = new SkeletonScript();
-        
-            skeleton.addComponent(ss);
-            skeleton.addComponent(skeletonCollider);
-
-            SceneManager.instance.runningScene.canvaces[0].addDrawObj(skeleton);
+           GameMaster.createEnemy('skeleton', new Vector2D(1000, 633), SceneManager.instance.runningScene.canvaces[0]);
+            
         }
         else
         {
-            skeleton.transform.pos = new Vector2D(960, 633);
+            skeleton.transform.pos = new Vector2D(1000, 633);
             skeleton.getComponent(SkeletonScript).health = 2;
         }
 
         if(skeleton2 == null)
         {
-            skeleton2 = new GameObject('skeleton2', new Vector2D(1300, 633), new Vector2D(180, 180));
-            skeleton2.tag = "skeleton";
-            let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
-            let ss = new SkeletonScript();
-        
-            skeleton2.addComponent(ss);
-            skeleton2.addComponent(skeletonCollider);
-
-            SceneManager.instance.runningScene.canvaces[0].addDrawObj(skeleton2);
+           GameMaster.createEnemy('skeleton2', new Vector2D(1300, 633), SceneManager.instance.runningScene.canvaces[0]);
         }
         else
         {
@@ -61,16 +53,19 @@ class MainSceneInit extends Component
             skeleton2.getComponent(SkeletonScript).health = 2;
         }
 
+        if(skeleton3 == null)
+        {
+            GameMaster.createEnemy('skeleton3', new Vector2D(1600, 633), SceneManager.instance.runningScene.canvaces[0]);
+        }
+        else
+        {
+            skeleton3.transform.pos = new Vector2D(1600, 633);
+            skeleton3.getComponent(SkeletonScript).health = 2;
+        }
+
         if(player == null)
         {
-            player = new GameObject('player', new Vector2D(30, 625), new Vector2D(200, 200));  
-            let playerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(140, 180)); 
-            let ps = new PlayerScript();
-        
-            player.addComponent(ps);
-            player.addComponent(playerCollider);
-
-            SceneManager.instance.runningScene.canvaces[0].addDrawObj(player);
+            GameMaster.createPlayer('player', new Vector2D(30, 625), SceneManager.instance.runningScene.canvaces[0]);
         }
         else
         {
@@ -88,7 +83,8 @@ class MainSceneInit extends Component
                 console.log("destroy fireball");
             }
         }
-
+        
+        //* Spawn UI elements
         if(scoreTextGO == null)
         {
             scoreTextGO = new GameObject('scoreText', new Vector2D(1200, 70), new Vector2D(200, 200));
@@ -111,11 +107,55 @@ class MainSceneInit extends Component
             scoreValueTextGO.getComponent(EngineText).text = "0";
         }
 
+        //* Spawn Health Bar background
+        if(healthBarBackground == null)
+        {
+            healthBarBackground = new GameObject('healthBarBackground', new Vector2D(200, 35), new Vector2D(150, 50));
+            let backgroundSquare = new SquareShape('gray');  
+
+            healthBarBackground.addComponent(backgroundSquare);
+            SceneManager.instance.runningScene.canvaces[0].addDrawObj(healthBarBackground);
+        }
+
+        
+        //* Spawn Health Bar slider
+        if(healthBarSlider == null)
+        {
+            let backgroundCenter = new Vector2D(healthBarBackground.transform.pos.x + healthBarBackground.transform.scale.x / 2, 
+            healthBarBackground.transform.pos.y + healthBarBackground.transform.scale.y / 2);
+
+            healthBarSlider = new GameObject('healthBarSlider', new Vector2D(0, 0), new Vector2D(150 / 1.1, 50 / 1.2));
+            let backgroundSquare = new SquareShape('red');  
+
+            healthBarSlider.transform.pos = new Vector2D(backgroundCenter.x - (healthBarSlider.transform.scale.x / 2), 
+            backgroundCenter.y - healthBarSlider.transform.scale.y / 2);
+
+            healthBarSlider.addComponent(backgroundSquare);
+
+            let healthSliderScript = new HealthSliderScript();
+            healthBarSlider.addComponent(healthSliderScript);
+
+            SceneManager.instance.runningScene.canvaces[0].addDrawObj(healthBarSlider);
+        }
+        else
+        {
+            healthBarSlider.transform.scale = new Vector2D(150 / 1.1, 50 / 1.2);
+        }
+
+        if(healthText == null)
+        {
+            healthText = new GameObject('Health Text', new Vector2D(90, 35 * 2), new Vector2D(200, 200));
+            let scoreText = new EngineText("Health: ");
+
+            healthText.addComponent(scoreText);
+            SceneManager.instance.runningScene.canvaces[0].addDrawObj(healthText);
+        }
+
+        
         //* Play bakcground theme
         AudioManager.instance.playAudio("main game background song");
 
         this.firstRun = false;
-        
     }
 
     onSceneExit()

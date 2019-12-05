@@ -18,8 +18,6 @@ class EndSceenTrigger extends Component
 
     onCollisionEnter(collision)
     {
-        console.log('this runs');
-
         if(collision.gameObject.id == "player")
         {
             Engine.instance.sceneManager.loadScene("End Scene");

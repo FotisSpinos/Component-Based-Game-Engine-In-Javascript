@@ -18,7 +18,7 @@ class EndSceneInit extends Component
         if(scoreValueTextGO == null)
         {
             scoreValueTextGO = new GameObject('scoreValueText', new Vector2D(1300, 80), new Vector2D(200, 200));
-            let scoreValueText = new EngineText("0");
+            let scoreValueText = new EngineText("");
 
             scoreValueTextGO.addComponent(scoreValueText);
             SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreValueTextGO);

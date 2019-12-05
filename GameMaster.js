@@ -11,10 +11,17 @@ class GameMaster
 
     update()
     {
-        this.scoreValueTextComp = GameObject.find("scoreValueText").getComponent(EngineText);
-        this.player = GameObject.find("player");
+        let scoreValueText = GameObject.find("scoreValueText");
 
-        console.log(this.player);
+        if(scoreValueText != null)
+        {
+            let engineTextcomp = scoreValueText.getComponent(EngineText);
+            this.scoreValueTextComp = engineTextcomp;
+        }
+            
+        
+        if(this.player == null)
+            this.player = GameObject.find("player");
     }
 
     static getInstance()
@@ -28,6 +35,48 @@ class GameMaster
 
     get score()
     {
+        if(this.scoreValueTextComp == null)
+            return '0';
 
+        return this.scoreValueTextComp.text
+    }
+
+    static createEnemy(id, position, canvas)
+    {
+        let skeleton = new GameObject(id, position, new Vector2D(180, 180));
+        skeleton.tag = "skeleton";
+        let skeletonCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(120, 160)); 
+        let ss = new SkeletonScript();
+    
+        skeleton.addComponent(ss);
+        skeleton.addComponent(skeletonCollider);
+
+        SceneManager.instance.runningScene.canvaces[0].addDrawObj(skeleton);
+    }
+
+    static createPlayer(id, position, canvas)
+    {
+        let player = new GameObject('player', position, new Vector2D(200, 200));  
+        let playerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(140, 180)); 
+        let ps = new PlayerScript();
+        player.addComponent(ps);
+        player.addComponent(playerCollider);
+
+        SceneManager.instance.runningScene.canvaces[0].addDrawObj(player);
+    }
+
+    static createPlayerScore(id, position, canvas)
+    {
+        let scoreTextGO = new GameObject(id + "Value", position, new Vector2D(200, 200));
+        
+        let scoreText = new EngineText("Score: ");
+        scoreTextGO.addComponent(scoreText);
+        SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreTextGO);
+
+        scoreValueTextGO = new GameObject(id + "ValueText", new Vector2D(position.x + 100, position.y), new Vector2D(200, 200));
+        let scoreValueText = new EngineText("0");
+
+        scoreValueTextGO.addComponent(scoreValueText);
+        SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreValueTextGO);
     }
 }

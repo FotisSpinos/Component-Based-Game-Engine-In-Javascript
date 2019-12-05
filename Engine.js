@@ -36,7 +36,8 @@ class Engine
             scene.onLoad();
             engine.previousScene.onExit();
             engine.previousScene.clearCanvaces();
-
+            
+            //engine.inpt.resetCursorInputs()
             GameMaster.getInstance().update();
         }
 
