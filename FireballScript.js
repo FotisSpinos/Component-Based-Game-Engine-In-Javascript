@@ -45,19 +45,6 @@ class FireballScript extends Component
             this.gameObject.transform.pos.x -= this.speed;
 
         if(this.gameObject.transform.pos.x > this.deleteBorder || this.gameObject.transform.pos.x < -this.deleteBorder)
-        {
             this.gameObject.canvas.removeDrawObj(this.gameObject);
-            console.log("destroy fireball");
-        }
-    }
-
-    render()
-    {
-
-    }
-
-    onCollisionEnter(collision)
-    {
-        
     }
 }

@@ -10,7 +10,7 @@ class InteractionChecker extends Component
     {
         let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect();
 
-        if(!Input.instance.buttonDown)
+        if(!Input.instance.cursorDown)
             return;
 
         if(Input.instance.onMouseDownPos.x > canvasOffset.x && 

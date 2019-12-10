@@ -4,7 +4,6 @@ class GameMaster
 
     constructor()
     {
-
         this.scoreValueTextComp;
         this.player;
     }
@@ -63,20 +62,5 @@ class GameMaster
         player.addComponent(playerCollider);
 
         SceneManager.instance.runningScene.canvaces[0].addDrawObj(player);
-    }
-
-    static createPlayerScore(id, position, canvas)
-    {
-        let scoreTextGO = new GameObject(id + "Value", position, new Vector2D(200, 200));
-        
-        let scoreText = new EngineText("Score: ");
-        scoreTextGO.addComponent(scoreText);
-        SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreTextGO);
-
-        scoreValueTextGO = new GameObject(id + "ValueText", new Vector2D(position.x + 100, position.y), new Vector2D(200, 200));
-        let scoreValueText = new EngineText("0");
-
-        scoreValueTextGO.addComponent(scoreValueText);
-        SceneManager.instance.runningScene.canvaces[0].addDrawObj(scoreValueTextGO);
     }
 }

@@ -20,14 +20,14 @@ class Canvas
         this.c.style.height = "100%";
 
         //Create game area
-        let gameArea = document.createElement("div");
-        gameArea.className = "gameArea";
-        gameArea.style.position = "absolute";
-        gameArea.style.top = "50%";
-        gameArea.style.left = "50%";
+        let canvasContainer = document.createElement("div");
+        canvasContainer.className = "CanvasContainer";
+        canvasContainer.style.position = "absolute";
+        canvasContainer.style.top = "50%";
+        canvasContainer.style.left = "50%";
 
-        document.getElementById("body").appendChild(gameArea);
-        gameArea.appendChild(this.c);
+        document.getElementById("body").appendChild(canvasContainer);
+        canvasContainer.appendChild(this.c);
     }
 
     constructor(id, size, drawObjs)
@@ -67,13 +67,6 @@ class Canvas
         {
             this.drawObjs.splice(elemIndex, 1);
         }
-    }
-
-    print = function()
-    {
-        console.log('Canvas: ' + this.id  + '\n' +
-        'Width: ' + this.c.width + '\n' +
-        'Height: ' + this.c.height + '\n');
     }
 
     clearCanvas = function()

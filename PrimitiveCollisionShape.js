@@ -3,7 +3,7 @@ class Collision
     constructor(gameObject, collisionDir)
     {
         this.gameObject = gameObject;
-        this.collisionDir = collisionDir.noramalize();
+        this.collisionDir = collisionDir.normalize();
     }
 }
 
@@ -40,12 +40,6 @@ class CollisionChecker
         
 
         return false;
-    }
-
-    // Checks if a collision happens between a square and a circle
-    static squareToCircle(rect1, circle)
-    {
-        // Not Yet Implemented
     }
     
     static defineCollisionType(collisionObj)
@@ -97,7 +91,6 @@ class CollisionChecker
             if(CollisionChecker.checkCollision(colliderObj, collider))
             {
                 let collision = new Collision(collider.gameObject, colliderObj.gameObject.transform.pos.minVec(collider.gameObject.transform.pos));
-                //colliderObj.gameObject.onCollisionEnter(collider.gameObject);
                 colliderObj.gameObject.onCollisionEnter(collision);
             }
         }    
@@ -111,6 +104,7 @@ class Collider extends Component
         super();
         this.offset = offset == null ? new Vector2D.zero : offset;
         this.active = true;
+        this.pos;
     }
 
     updatePos()
@@ -138,10 +132,10 @@ class Collider extends Component
 
 class CircleCollider extends Collider
 {
-    constructor(offset, radious)
+    constructor(offset, radius)
     {
         super(offset);
-        this.radious = radious;
+        this.radius = radius;
         this.pos = Vector2D.zero;
     }
 
@@ -152,8 +146,7 @@ class CircleCollider extends Collider
 
     update()
     {
-        //update position
-        this.pos = this.gameObject.transform.pos.addVec(this.offset);
+        this.updatePos();
         CollisionChecker.checkCanvasCollisions(this);  
     }
 }
@@ -176,10 +169,5 @@ class SquareCollider extends Collider
     {
         this.updatePos();
         CollisionChecker.checkCanvasCollisions(this);
-    }
-
-    render()
-    {
-
     }
 }

@@ -86,9 +86,4 @@ class Scene
             this.canvaces[i].collisionCheck();
         }
     }
-
-    print = function()
-    {
-        console.log('Scene Print: ' + this.id);
-    }
 }

@@ -20,7 +20,7 @@ class Window
             sceneIndex = currentScene.index;
              
 
-        var gameArea = document.querySelectorAll("body div.gameArea");  //resieved all game areas for each scene
+        var gameArea = document.querySelectorAll("body div.CanvasContainer");  //resieved all game areas for each scene
 
         var widthToHeight = 16 / 9;
 

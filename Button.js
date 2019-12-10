@@ -26,7 +26,7 @@ class Button extends Component
         }
 
         //return if the button is pressed
-        if(!Input.instance.buttonDown)
+        if(!Input.instance.cursorDown)
             return;        
 
         let canvasOffset = this.gameObject.canvas.c.getBoundingClientRect();

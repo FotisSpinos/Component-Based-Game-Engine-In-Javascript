@@ -8,8 +8,6 @@ const AnimationState = {
     PLAYING: 'playing' 
 }
 
-// ? Do we need all the reverse function at the botom
-
 class SpriteAnimation
 {
     constructor(engineImage, startIndex, spriteScale, blankSpace, updateTimer, ySteps, xSteps)
@@ -53,7 +51,7 @@ class SpriteAnimation
         // Set image
         this.spriteImg = new Image(scale.x, scale.y);
 
-        this.spriteImg.src = this.engineImage.url;
+        this.spriteImg.src = this.engineImage.imgSource;
         this.spriteImg.id = this.engineImage.id;
     }
 
@@ -173,35 +171,5 @@ class SpriteAnimation
         this.xStepsIndex = 0;
         this.currentStepsX = 0;
         this.currentStepsY = 0;
-    }
-
-    get animDuration()
-    {
-        var stepsTotal = 0;
-
-        for(var i = 0; i < this.xSteps.length; i++)
-        {
-            stepsTotal += this.xSteps[i];
-        }
-
-        if(this.animType == AnimationType.REPEATABLE)
-            return stepsTotal * this.updateTimer;
-        else
-            return stepsTotal * this.updateTimer * 2;
-    }
-
-    createReverseAnim()
-    {
-        let destX = this.destinationX(this.xSteps.length - 1);
-        let destY = this.destinationY();
-        let destPos = new Vector2D(destX, destY);
-
-        return new Sprite(this.engineImage, 
-                            destPos, 
-                            new Vector2D(- this.spriteScale.x, - this.spriteScale.y), 
-                            new Vector2D(- this.blankSpace.x, - this.blankSpace.y), 
-                            this.updateTimerStore, 
-                            this.ySteps, 
-                            this.xSteps);
     }
 }

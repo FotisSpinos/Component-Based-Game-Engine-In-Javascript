@@ -4,7 +4,9 @@ class Engine
 
     constructor()
     {
-        Engine.instance = this;
+        if(Engine.instance == null )
+            Engine.instance = this;
+
         this.running = true;
 
         this.inpt = new Input();
@@ -14,35 +16,35 @@ class Engine
         
         this.previousScene;
 
-        this.timestep = 0;
         this.lastFrameTime = 0;
-        this.maxFps = 0;
         this.deltaTime = 0;
     }
 
-    initDefaultFramerate = function()
+    getInstance()
     {
-        this.timestep = 1000 / 60;
-        this.lastFrameTime = 0;
-        this.maxFps = 10;
+        if(Engine.instance == null)
+            Engine.instance = new Engine();
+        
+        return Engine.instance;
     }
     
+    //* The game loop
     run = function(timestamp)
     {
         let engine = Engine.instance;
         var scene = SceneManager.instance.runningScene;
+        
+        //* Culculate delta time
+        engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
+        engine.lastFrameTime = Date.now();
+
         if(scene != engine.previousScene && engine.previousScene != null)
         {
             scene.onLoad();
             engine.previousScene.onExit();
             engine.previousScene.clearCanvaces();
-            
-            //engine.inpt.resetCursorInputs()
             GameMaster.getInstance().update();
         }
-
-        engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
-        engine.lastFrameTime = Date.now();
 
         if(scene != null)
         {

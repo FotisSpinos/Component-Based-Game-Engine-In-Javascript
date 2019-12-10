@@ -3,12 +3,12 @@ class HealthSliderScript extends Component
     constructor()
     {
         super();
-
-        this.player = GameObject.find("player").getComponent(PlayerScript);
     }
 
     onSceneLoad()
     {
+        
+        this.player = GameObject.find("player").getComponent(PlayerScript);
         this.maxHealth = this.player.health;
         this.currentHealth = this.player.health;
     }

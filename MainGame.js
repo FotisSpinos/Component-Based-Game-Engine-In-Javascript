@@ -1,8 +1,3 @@
-//*     PRIMARY
-//TODO introduce health bar
-//TODO fix bug with button
-//TODO fix bug with undefined score
-
 let engine;
 
 function playerInteractionScene()
@@ -16,11 +11,11 @@ function playerInteractionScene()
     let canvasArray = [interactionCanvas];
 
     let interactionScene = new Scene('interaction Scene', canvasArray);
-    engine.sceneManager.addScene(interactionScene);
+    SceneManager.instance.addScene(interactionScene);
 
     interactionCanvas.addDrawObj(interactionCheckerGO);
 
-    Engine.instance.sceneManager.loadScene(interactionScene.name);
+    SceneManager.instance.loadScene(interactionScene.name);
 
     //* Create Background
     let backgroundGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(1578, 969));
@@ -30,8 +25,8 @@ function playerInteractionScene()
     
 
     //* Create score text
-    let scoreGO = new GameObject('Click Screen Text', new Vector2D(1578 / 2 - 300, 969 - 300), new Vector2D(200, 200));
-    let scoreText = new EngineText("Click Screen To Play The Game");
+    let scoreGO = new GameObject('Click Screen Text', new Vector2D(1578 / 2 - 380, 969 - 300), new Vector2D(200, 200));
+    let scoreText = new EngineText("Click Screen To Play The Wizard of Fire");
     scoreText.font = "40px Comic Sans MS";
 
     scoreGO.addComponent(scoreText);
@@ -47,7 +42,7 @@ function openningScene()
     let canvasArray = [openningCanvas];
 
     var openningScene = new Scene('Openning Scene', canvasArray);
-    engine.sceneManager.addScene(openningScene);
+    SceneManager.instance.addScene(openningScene);
 
 /************************************************************************************************************************/
     // * start scene init
@@ -119,7 +114,7 @@ function mainGameScene()
     var canvasArray = [mainGameCanvas];
     
     var mainScene = new Scene('Main Scene', canvasArray);
-    engine.sceneManager.addScene(mainScene);
+    SceneManager.instance.addScene(mainScene);
 
 /************************************************************************************************************************/
 
@@ -169,7 +164,7 @@ function endScene()
     let canvasArray = [endSceneCanvas];
 
     var endScene = new Scene('End Scene', canvasArray);
-    engine.sceneManager.addScene(endScene);
+    SceneManager.instance.addScene(endScene);
 
 /************************************************************************************************************************/
     // * create scene initialization 
@@ -188,7 +183,7 @@ function endScene()
     backgroundAC.playAnimation('backgroundSprite');
 
     //* Create score text
-    let scoreGO = new GameObject('scoreText', new Vector2D(1200, 80), new Vector2D(200, 200));
+    let scoreGO = new GameObject('scoreText', new Vector2D(1200, 130), new Vector2D(200, 200));
     let scoreText = new EngineText("Score: ");
 
     scoreGO.addComponent(scoreText);
@@ -196,16 +191,20 @@ function endScene()
     //* play background audio
     AudioManager.instance.playAudio("end scene background song");
 
+    //* Create Game Over Text
+    let gameOverGO = new GameObject('GameOver', new Vector2D(1200, 80), new Vector2D(200, 200));
+    let gameOverText = new EngineText("Game Over");
+    gameOverText.font = '40px Comic Sans MS'
+
+    gameOverGO.addComponent(gameOverText);
 
     // *Create play game button
     let playMainGameGO = new GameObject('main game button game object', new Vector2D(110, 50), new Vector2D(210, 100));
     let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
         AudioManager.instance.playAudio("ButtonClick.wav");
-        Engine.instance.sceneManager.loadScene("Openning Scene");
+        SceneManager.instance.loadScene("Openning Scene");
     });
         
-
-    //Engine.instance.sceneManager.loadScene(endScene.name);
 
     backgroundGO.addComponent(backgroundAC);
     playMainGameGO.addComponent(playMainGameBtn);
@@ -213,6 +212,7 @@ function endScene()
     endSceneCanvas.addDrawObj(backgroundGO);
     endSceneCanvas.addDrawObj(playMainGameGO);
     endSceneCanvas.addDrawObj(scoreGO);
+    endSceneCanvas.addDrawObj(gameOverGO);
 
     endSceneCanvas.addDrawObj(sceneInitGo);
 }
@@ -228,16 +228,14 @@ AudioManager.instance.addAudio(new EngineAudio("ghost attack", "Ghost Attack Sou
 AudioManager.instance.addAudio(new EngineAudio("main game background song", "Necropolis - Heroes of Might and Magic IV (4) OST.mp3", true));
 AudioManager.instance.addAudio(new EngineAudio("end scene background song", "Castlevania SOTN Lost Painting.mp3", true));
 
-
 let win = new Window();
 
-Engine.instance.sceneManager.loadScene('Openning Scene');
+SceneManager.instance.loadScene('Openning Scene');
 
 playerInteractionScene();
 openningScene();
 mainGameScene();
 endScene();
-engine.initDefaultFramerate();
 requestAnimationFrame(Engine.instance.run);
 
 //TODO culc mouse position once the window changes

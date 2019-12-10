@@ -12,12 +12,12 @@ class EndSceneInit extends Component
 
         if(!this.firstRun)
         {
-            scoreValueText = GameObject.find("scoreValueText");
+            scoreValueTextGO = GameObject.find("scoreValueText");
         }
 
         if(scoreValueTextGO == null)
         {
-            scoreValueTextGO = new GameObject('scoreValueText', new Vector2D(1300, 80), new Vector2D(200, 200));
+            scoreValueTextGO = new GameObject('scoreValueText', new Vector2D(1300, 130), new Vector2D(200, 200));
             let scoreValueText = new EngineText("");
 
             scoreValueTextGO.addComponent(scoreValueText);
@@ -25,6 +25,9 @@ class EndSceneInit extends Component
         }
         
         scoreValueTextGO.getComponent(EngineText).text = GameMaster.getInstance().scoreValueTextComp.text;
+
+        this.firstRun = false;
+
         //* play background audio
         AudioManager.instance.playAudio("end scene background song");
     }

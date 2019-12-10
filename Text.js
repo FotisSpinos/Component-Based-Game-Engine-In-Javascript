@@ -11,21 +11,6 @@ class EngineText extends Component
         this.color = 'red';
     }
 
-    start()
-    {
-
-    }
-
-    update()
-    {
-
-    }
-
-    SetColor(color)
-    {
-
-    }
-
     render()
     {
         let canvasContext = this.gameObject.canvas.ctx;

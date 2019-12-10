@@ -1,9 +1,9 @@
 class EngineImage extends Component
 {
-    constructor(url, id)
+    constructor(imgSource, id)
     {
         super();
-        this.url = url;
+        this.imgSource = imgSource;
         this.id = id;
         this.img;
     }
@@ -11,13 +11,8 @@ class EngineImage extends Component
     start()
     {
         this.img = new Image(this.gameObject.transform.scale.x, this.gameObject.transform.scale.y);
-        this.img.src = this.url;
+        this.img.src = this.imgSource;
         this.img.id = this.id;
-    }
-
-    update()
-    {
-
     }
     
     render()

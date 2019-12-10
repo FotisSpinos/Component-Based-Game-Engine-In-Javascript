@@ -5,11 +5,6 @@ class Component
         this.gameObject = null;
     }
 
-    set compoenentGameObject(gameObject)
-    {
-        this.gameObject = gameObject;
-    }
-
     start()
     {
 
