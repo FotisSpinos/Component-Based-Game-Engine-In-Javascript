@@ -4,32 +4,47 @@ class Engine
 
     constructor()
     {
-        Engine.instance = this;
+        if(Engine.instance == null )
+            Engine.instance = this;
+
         this.running = true;
 
         this.inpt = new Input();
         this.sceneManager = new SceneManager();
+        this.audioManager = new AudioManager();
+        this.window = new Window();
         
-        this.timestep = 0;
+        this.previousScene;
+
         this.lastFrameTime = 0;
-        this.maxFps = 0;
         this.deltaTime = 0;
     }
 
-    initDefaultFramerate = function()
+    getInstance()
     {
-        this.timestep = 1000 / 60;
-        this.lastFrameTime = 0;
-        this.maxFps = 10;
+        if(Engine.instance == null)
+            Engine.instance = new Engine();
+        
+        return Engine.instance;
     }
     
+    //* The game loop
     run = function(timestamp)
     {
         let engine = Engine.instance;
-        var scene = SceneManager.runningScene;
-
+        var scene = SceneManager.instance.runningScene;
+        
+        //* Culculate delta time
         engine.deltaTime = (Date.now() - engine.lastFrameTime) / 1000;
         engine.lastFrameTime = Date.now();
+
+        if(scene != engine.previousScene && engine.previousScene != null)
+        {
+            scene.onLoad();
+            engine.previousScene.onExit();
+            engine.previousScene.clearCanvaces();
+            GameMaster.getInstance().update();
+        }
 
         if(scene != null)
         {
@@ -37,34 +52,10 @@ class Engine
             engine.inpt.updateAxis();
             scene.update();
             scene.render();
+            engine.inpt.resetCursorInputs();
         }
         
+        engine.previousScene = scene;
         requestAnimationFrame(engine.run);
     }
 }
-        /*
-        if(timestamp < Engine.instance.lastFrameTime + (1000 / Engine.instance.maxFps))
-            requestAnimationFrame(Engine.instance.run);
-
-        Engine.instance.deltaTime += timestamp - Engine.instance.lastFrameTime;
-        Engine.instance.lastFrameTime = timestamp;
-
-        let scene = SceneManager.runningScene;
-
-        
-        console.log("deltaTime: " + Engine.instance.deltaTime);
-        console.log("timestamp: " + timestamp); 
-        console.log("lastFrameTime" + Engine.instance.lastFrameTime);
-
-        while(Engine.instance.deltaTime >= Engine.instance.timestep)
-        {
-            Engine.instance.deltaTime -= Engine.instance.timestep;
-            scene.update();
-        }
-
-        console.log("update completed");
-        scene.clearCanvaces();
-        scene.render();
-        requestAnimationFrame(Engine.instance.run);
-    }
-    */

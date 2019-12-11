@@ -24,6 +24,18 @@ class AnimationController extends Component
             spriteAnimation.initImg(this.gameObject.transform.scale);
     }
 
+    pauseAnimation(animName)
+    {
+        var index = -1;
+
+        // Find component index
+        for(var i = 0; i < this.spriteAnimations.length; i++)
+        {
+            if(animName == this.spriteAnimations[i].name)
+                this.spriteAnimations[i].pause();
+        }
+    }
+
     removeSpriteAnimation(animName)
     {
         var index = -1;
@@ -44,15 +56,21 @@ class AnimationController extends Component
 
     playAnimation(animName)
     {
+        if(this.activeAnimation != null && this.activeAnimation.isPlaying())
+        {            
+            if(animName == this.activeAnimation.name)
+                return;
+        }
+
         for(var i = 0; i < this.spriteAnimations.length; i++)
         {
             if(animName == this.spriteAnimations[i].name)
-            {
+            {                
                 this.activeAnimation = this.spriteAnimations[i];
-                this.spriteAnimations[i].active = true;
+                this.spriteAnimations[i].play();
             }
             else
-            this.spriteAnimations[i].active = false;
+                this.spriteAnimations[i].pause();
         }
     }
 

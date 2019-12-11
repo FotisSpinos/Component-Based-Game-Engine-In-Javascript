@@ -5,11 +5,6 @@ class Component
         this.gameObject = null;
     }
 
-    set compoenentGameObject(gameObject)
-    {
-        this.gameObject = gameObject;
-    }
-
     start()
     {
 
@@ -21,6 +16,21 @@ class Component
     }
 
     render()
+    {
+        
+    }
+
+    onCollisionEnter(collisionObj)
+    {
+
+    }
+
+    onSceneLoad()
+    {
+        
+    }
+
+    onSceneExit()
     {
         
     }

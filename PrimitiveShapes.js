@@ -1,65 +1,20 @@
-class Text extends Component
-{
-    constructor(text, font, color)
-    {
-        super();
-        this.color = color == null ? 'yellow' : color;
-        this.text = text;
-    }
-
-    render()
-    {
-        var objPos = this.gameObject.transform.pos; 
-        var objScale = this.gameObject.transform.scale;
-        var ctx = this.gameObject.canvas.ctx;
-
-        ctx.fillStyle = this.color;
-
-        ctx.font = font;
-        ctx.fillText(text, objScale.x, objScale.y);
-    }
-}
-
-class LineShape extends Component
-{
-    constructor(color)
-    {
-        super();
-        this.color = color == null ? 'yellow' : color;
-    }
-
-    render()
-    {
-        var objPos = this.gameObject.transform.pos; 
-        var objScale = this.gameObject.transform.scale;
-        var ctx = this.gameObject.canvas.ctx;
-
-        ctx.fillStyle = this.color;
-
-        ctx.moveTo(objPos.x, objPos.pos.y);
-        ctx.lineTo(objPos.x + objScale.x, objPos.y + objScale.scale.y);
-        ctx.stroke();
-    }
-}
-
 class SquareShape extends Component
 {
     constructor(color)
     {
         super();
         this.color = color == null ? 'yellow' : color;
-        
     }
 
     render()
     {
         // get Game Object variables
+        var scale = this.gameObject.transform.scale;
         var objPos = this.gameObject.transform.pos; 
-        var objScale = this.gameObject.transform.scale;
         var ctx = this.gameObject.canvas.ctx;
 
         ctx.fillStyle = this.color;
-        ctx.fillRect(objPos.x, objPos.y, objScale.x, objScale.y);
+        ctx.fillRect(objPos.x, objPos.y, scale.x, scale.y);
     }
 
     print = function()

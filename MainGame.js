@@ -1,29 +1,127 @@
 let engine;
 
-// TASKS FOR NEXT TIME
-// Create new compoennt: animation controller
-// remove component inheritane from sprite class
-// animation controller: will store sprite animations
-// -add Sprite animations
-// -play sprite animation (and disable all the other sprite animations)
-// -remove sprite animation
-
-function loadEditor()
+function playerInteractionScene()
 {
-    var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), []);
-    var canvas2 = new Canvas('Gameplay Canvas2', new Vector2D(window.innerWidth / 2, window.innerHeight), []);
-    var canvasArray = [canvas, canvas2];
+    let interactionCheckerGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(0, 0));
+    let interactionChecker = new InteractionChecker();
+
+    interactionCheckerGO.addComponent(interactionChecker);
+
+    let interactionCanvas = new Canvas('Interaction Canvas', new Vector2D(1578, 969), []);
+    let canvasArray = [interactionCanvas];
+
+    let interactionScene = new Scene('interaction Scene', canvasArray);
+    SceneManager.instance.addScene(interactionScene);
+
+    interactionCanvas.addDrawObj(interactionCheckerGO);
+
+    SceneManager.instance.loadScene(interactionScene.name);
+
+    //* Create Background
+    let backgroundGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(1578, 969));
+    let background = new EngineImage("InteractionBackgroundImage.png", 'background');
+
+    backgroundGO.addComponent(background);
     
-    var mainScene = new Scene('Main Scene', canvasArray);
-    engine.sceneManager.addScene(mainScene);
-    engine.sceneManager.loadScene(mainScene.name);
+
+    //* Create score text
+    let scoreGO = new GameObject('Click Screen Text', new Vector2D(1578 / 2 - 380, 969 - 300), new Vector2D(200, 200));
+    let scoreText = new EngineText("Click Screen To Play The Wizard of Fire");
+    scoreText.font = "40px Comic Sans MS";
+
+    scoreGO.addComponent(scoreText);
+
+
+    interactionCanvas.addDrawObj(backgroundGO);
+    interactionCanvas.addDrawObj(scoreGO);
+}
+
+function openningScene()
+{
+    let openningCanvas = new Canvas('Openning Canvas', new Vector2D(1578, 969), []);
+    let canvasArray = [openningCanvas];
+
+    var openningScene = new Scene('Openning Scene', canvasArray);
+    SceneManager.instance.addScene(openningScene);
+
+/************************************************************************************************************************/
+    // * start scene init
+    let sti = new StartSceneInit();
+    let stiGO = new GameObject('iniy', new Vector2D(0, 0),  new Vector2D(0, 0)); 
+
+    stiGO.addComponent(sti);
+
+/************************************************************************************************************************/
+    // * Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), 
+    openningCanvas.size);
+
+    let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
+    backgroundSprite.name = 'backgroundSprite';
+
+    let backgroundAC = new AnimationController();
+    backgroundAC.addSpriteAnimation(backgroundSprite);
+    backgroundAC.playAnimation('backgroundSprite');
+
+    backgroundGO.addComponent(backgroundAC);
+
+  /************************************************************************************************************************/  
+
+    //* Create Button 
+    let playMainGameGO = new GameObject('skeleton', new Vector2D(110, 50), new Vector2D(210, 100));
+    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
+        AudioManager.instance.playAudio("ButtonClick.wav");
+        Engine.instance.sceneManager.loadScene("Main Scene");
+    });
+    
+    playMainGameGO.addComponent(playMainGameBtn);
+
+/************************************************************************************************************************/
+    //* Create Instroctions title Text 
+    let instructionsGO = new GameObject('instructions title GO', new Vector2D(100, 200), new Vector2D(100, 120));
+    let instructionsText = new EngineText('Instructions');
+
+    instructionsGO.addComponent(instructionsText);
     
 /************************************************************************************************************************/
+    //* Create arrow keys Text Instroctions  
+    let instructionsArrowKeysGO = new GameObject('instruction arrow keys GO', new Vector2D(100, 245), new Vector2D(100, 165));
+    let instructionsArrowKeysText = new EngineText('Press the arrow keys to move');
 
-    // Create Background
-    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), canvas.size);
+    instructionsArrowKeysGO.addComponent(instructionsArrowKeysText);
+
+    /************************************************************************************************************************/
+    //* Create attack Text Instroctions 
+    let instructionsAttackGO = new GameObject('instruction attack key GO', new Vector2D(100, 290), new Vector2D(100, 210));
+    let instructionsAttackText = new EngineText('Press E to attack');
+
+    instructionsAttackGO.addComponent(instructionsAttackText);
+
+/************************************************************************************************************************/
+    //* add objs to canvas
+    openningCanvas.addDrawObj(backgroundGO)
+    openningCanvas.addDrawObj(instructionsGO);
+    openningCanvas.addDrawObj(instructionsArrowKeysGO);
+    openningCanvas.addDrawObj(instructionsAttackGO);
+    openningCanvas.addDrawObj(playMainGameGO);
+    openningCanvas.addDrawObj(stiGO);
+}
+
+function mainGameScene()
+{
+    var mainGameCanvas = new Canvas('Gameplay Canvas', new Vector2D(1578, 969), []);
+    var canvasArray = [mainGameCanvas];
+    
+    var mainScene = new Scene('Main Scene', canvasArray);
+    SceneManager.instance.addScene(mainScene);
+
+/************************************************************************************************************************/
+
+    //* Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), mainGameCanvas.size);
     let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
-    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(1968/3, 752/2), 0.1, 1, [2, 0]);
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
     backgroundSprite.name = 'backgroundSprite';
 
     let backgroundAC = new AnimationController();
@@ -33,135 +131,109 @@ function loadEditor()
     backgroundGO.addComponent(backgroundAC);
 
 /************************************************************************************************************************/
+    //* Create Load Next Scene Trigger
+    let nextSceneTriggerGO = new GameObject('end scene trigger', new Vector2D(1500, 633), new Vector2D(180, 180));
+    let nextSceneTriggerCollider = new SquareCollider(new Vector2D(0, 0), new Vector2D(130, 160));
+    let endSceenTrigger = new EndSceenTrigger('End Scene');
 
-    // Create Character
-    let player = new GameObject('player', new Vector2D(30, 600), new Vector2D(200, 200)); 
-
-    /**
-    let deathSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
-    deathSprite.name = 'deathSprite';
-
-    let attackSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'name'), 
-    new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [6]);
-    attackSprite.name = 'attackSprite';
-   
-    let walkSprite = new SpriteAnimation(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [7]);
-    walkSprite.name = 'walkSprite';
-
-    let playerAC = new AnimationController();
-    playerAC.addSpriteAnimation(deathSprite);
-    playerAC.addSpriteAnimation(attackSprite);
-    playerAC.addSpriteAnimation(walkSprite);
-    
-    playerAC.playAnimation('attackSprite');
-    player.addComponent(playerAC);
-    */
-
-    let ps = new PlayerScript();
-    player.addComponent(ps);
+    nextSceneTriggerGO.addComponent(nextSceneTriggerCollider);
+    nextSceneTriggerGO.addComponent(endSceenTrigger);
 
 /************************************************************************************************************************/
 
-    // Add GO's to canvas
-    canvas.addDrawObj(backgroundGO);
-    canvas.addDrawObj(player);
+    // * create scene initialization 
+    let sceenInit = new MainSceneInit();
+    let sceneInitGo = new GameObject('init', new Vector2D(0, 0), mainGameCanvas.size);
+    sceneInitGo.addComponent(sceenInit);
 
 /************************************************************************************************************************/
-    //Create Axis
-    let playerMovement = new Axis('Horizontal', 68, 65, 0.2, 0.2);
+
+    //* Add GO's to canvas
+    mainGameCanvas.addDrawObj(backgroundGO);
+    mainGameCanvas.addDrawObj(nextSceneTriggerGO)
+    mainGameCanvas.addDrawObj(sceneInitGo);
+
+/************************************************************************************************************************/
+    //* Create Axis
+    let playerMovement = new Axis('Horizontal', 68, 65, 0.3, 0.2);
 }
 
-engine = new Engine();
-loadEditor();
-engine.initDefaultFramerate();
-requestAnimationFrame(Engine.instance.run);
+function endScene()
+{
+    let endSceneCanvas = new Canvas('Ending Canvas', new Vector2D(1578, 969), []);
+    let canvasArray = [endSceneCanvas];
 
+    var endScene = new Scene('End Scene', canvasArray);
+    SceneManager.instance.addScene(endScene);
 
-//https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif
-    /*
+/************************************************************************************************************************/
+    // * create scene initialization 
+    let sceenInit = new EndSceneInit();
+    let sceneInitGo = new GameObject('init', new Vector2D(0, 0), new Vector2D(0, 0));
+    sceneInitGo.addComponent(sceenInit);
 
+    // * Create Background
+    let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), endSceneCanvas.size);
+    let backgroundImg = new EngineImage('End Scene Background (2).png', 'test');
+    let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(13500  / 27, 475), new Vector2D(0, 0), 0.1, 0, [26]);
+    backgroundSprite.name = 'backgroundSprite';
 
-    let obj1 = new GameObject('sprite', new Vector2D(100, 100), new Vector2D(100, 110));
-    let obj2 = new GameObject('sprite', new Vector2D(140, 100), new Vector2D(100, 110));
+    let backgroundAC = new AnimationController();
+    backgroundAC.addSpriteAnimation(backgroundSprite);
+    backgroundAC.playAnimation('backgroundSprite');
 
-    let imgaeTest = new EngineImage('https://www.spriters-resource.com/download/41806/', 'name');
+    //* Create score text
+    let scoreGO = new GameObject('scoreText', new Vector2D(1200, 130), new Vector2D(200, 200));
+    let scoreText = new EngineText("Score: ");
 
-    //param 1 image source, start position, size, offset, delay timer, y border, x border.
-    let spriteTest = new Sprite(imgaeTest, new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 1, 0, [5]);
-    let engineImage = new EngineImage('https://img.itch.zone/aW1nLzEzMTI4NDYuZ2lm/original/figmQY.gif', 'test');
-    //spriteTest = spriteTest.createReverseAnim();
-    
+    scoreGO.addComponent(scoreText);
 
-    obj1.addComponent(spriteTest);
-    obj2.addComponent(engineImage);
-    //obj1.removeComponent(EngineImage);
+    //* play background audio
+    AudioManager.instance.playAudio("end scene background song");
 
-    goArray = [obj2, obj1];
+    //* Create Game Over Text
+    let gameOverGO = new GameObject('GameOver', new Vector2D(1200, 80), new Vector2D(200, 200));
+    let gameOverText = new EngineText("Game Over");
+    gameOverText.font = '40px Comic Sans MS'
 
-    var canvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), goArray);
-    var canvasArray = [canvas];
-    
-    var mainScene = new Scene('Main Scene', canvasArray);
+    gameOverGO.addComponent(gameOverText);
 
-    engine.sceneManager.addScene(mainScene);
-    engine.sceneManager.loadScene(mainScene.name);
-    */
-
-/*
-    // Define Player Game Object
-    var playerPos = new Vector2D(0, 0);
-    var playerSize = new Vector2D(180 , 15);
-
-    playerPos.y = window.innerHeight - playerSize.y - 20;
-    playerPos.x = window.innerWidth / 2 - playerSize.x / 2;
-
-    var playerGameObject = new GameObject('Player', playerPos, playerSize);
-
-    // Add Components to player GO
-    playerGameObject.addComponent(new SquareShape());
-
-    var ballPos = new Vector2D(playerGameObject.transform.pos.x + playerGameObject.transform.scale.x / 2, 
-        playerGameObject.transform.pos.y - 20);
+    // *Create play game button
+    let playMainGameGO = new GameObject('main game button game object', new Vector2D(110, 50), new Vector2D(210, 100));
+    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
+        AudioManager.instance.playAudio("ButtonClick.wav");
+        SceneManager.instance.loadScene("Openning Scene");
+    });
         
-    var ballGO = new GameObject('ball', ballPos, new Vector2D(20, 20));
-    ballGO.addComponent(new CircleShape());
 
-    var img = new GameObject('image attempt', new Vector2D(20, 20), new Vector2D(20, 20))
-    var image = new Image("http://www.google.com/intl/en_com/images/logo_plain.png", 'Google')
-    img.addComponent(image);
+    backgroundGO.addComponent(backgroundAC);
+    playMainGameGO.addComponent(playMainGameBtn);
 
-    var firstMotion = new MotionObject(new Vector2D(0, 0), 6.0);
-    firstMotion.normalizeDir(new Vector2D(1, 0));
-    img.addComponent(firstMotion);
-    console.log(firstMotion.dir);
+    endSceneCanvas.addDrawObj(backgroundGO);
+    endSceneCanvas.addDrawObj(playMainGameGO);
+    endSceneCanvas.addDrawObj(scoreGO);
+    endSceneCanvas.addDrawObj(gameOverGO);
 
-    // Define Objects to draw in the scene
-    var mainCanvasObjs = [playerGameObject, ballGO, img];
+    endSceneCanvas.addDrawObj(sceneInitGo);
+}
 
-    //Create Canvaces
-    var mainCanvas = new Canvas('Gameplay Canvas', new Vector2D(window.innerWidth, window.innerHeight), mainCanvasObjs);
-    var canvasCollection = [mainCanvas];
 
-    // Create and load Scene
-    var mainScene = new Scene('Main Scene', canvasCollection);
-    var sceneManager = new SceneManager();
-    sceneManager.addScene(mainScene);
-    sceneManager.loadScene(mainScene.name);
-*/
+engine = new Engine();
 
-/*
+//* Add sounds
+AudioManager.instance.addAudio(new EngineAudio("background", "Castlevania Symphony of the Night OST Metamorphosis I.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("fireBall sound", "fireballSpawn.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ButtonClick.wav", "ButtonClick.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ghost attack", "Ghost Attack Sound.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("main game background song", "Necropolis - Heroes of Might and Magic IV (4) OST.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("end scene background song", "Castlevania SOTN Lost Painting.mp3", true));
 
-    let deathSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 93), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [10]);
+let win = new Window();
 
-    
-            let attackSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'name'), 
-    new Vector2D(2, 425), new Vector2D(93, 93), new Vector2D(102, 0), 0.1, 1, [6]);
+SceneManager.instance.loadScene('Openning Scene');
 
-    
-    let attackSprite = new Sprite(new EngineImage('https://www.spriters-resource.com/download/41806/', 'death animation'), 
-    new Vector2D(0, 636), new Vector2D(93, 93), new Vector2D(108, 0), 0.1, 1, [10]);
-
-*/
+playerInteractionScene();
+openningScene();
+mainGameScene();
+endScene();
+requestAnimationFrame(Engine.instance.run);

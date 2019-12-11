@@ -14,7 +14,7 @@ class Vector2D
             return Math.sqrt(sumSquareOfLengths);
     }
 
-    noramalize()
+    normalize()
     {
         var magn = this.magnitude();        
         return ( new Vector2D(this.x / magn, this.y / magn) );

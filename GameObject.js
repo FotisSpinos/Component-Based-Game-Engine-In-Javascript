@@ -7,6 +7,7 @@ class GameObject
 
         // Add transform component
         this.transform = new Transform(pos, scale);
+
         this.addComponent(this.transform);
 
         // Add name and tag
@@ -83,9 +84,15 @@ class GameObject
         // should contain any initial functionality for the Game Object
     }
 
-    onCollisionEnter = function(collisionObj)
+    onCollisionEnter = function(collision)
     {
-        //console.log('Collision happened in gameObject with obj: ' + collisionObj.id);
+        if(this.components.legnth == 0)
+            return;
+
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].onCollisionEnter(collision);
+        }
     }
 
     // Excecuted every component behaviour
@@ -112,10 +119,28 @@ class GameObject
         }
     }    
 
+    onSceneLoad = function()
+    {
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].onSceneLoad();
+        }
+    }
+
+    onSceneExit = function()
+    {
+        for(var i = 0; i < this.components.length; i++)
+        {
+            this.components[i].onSceneExit();
+        }
+    }
+
     // Finds a game object in the scene from it's id
     static find(id)
     {
-        var canvaces = SceneManager.runningScene.canvaces;
+        if(SceneManager.instance == null)
+            return null;
+        var canvaces = SceneManager.instance.runningScene.canvaces;
         
         for(var c = 0; c < canvaces.length; c++)
         {
@@ -125,5 +150,26 @@ class GameObject
                     return canvaces[c].drawObjs[i];
             }
         }
+    }
+
+    static findObjsWithTag(tag)
+    {
+        if(SceneManager.instance == null)
+            return null;
+        var canvaces = SceneManager.instance.runningScene.canvaces;
+        let output = [];
+        
+        for(var c = 0; c < canvaces.length; c++)
+        {
+            for(var i = 0; i < canvaces[c].drawObjs.length; i++)
+            {
+                if(tag == canvaces[c].drawObjs[i].tag)
+                {
+                    output.push(canvaces[c].drawObjs[i]);
+                }
+            }
+        }
+
+        return output;
     }
 }

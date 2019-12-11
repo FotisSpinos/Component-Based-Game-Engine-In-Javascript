@@ -1,17 +1,34 @@
 class SceneManager
 {
-    static runningScene;
+    //static runningScene;
     static instance;
+    static sceneNumber = 0;
 
     constructor()
     {
-        SceneManager.instance = this;
+        if(SceneManager.instance == null)
+            SceneManager.instance = this;
+
         this.scenes = [];
+        this.runningScene;
+    }
+
+    static getInstance()
+    {
+        if(SceneManager.instance == null)
+            SceneManager.instance = new SceneManager();
+        return SceneManager.instance;
     }
 
     addScene(scene)
     {
         this.scenes.push(scene);
+
+        if(SceneManager.sceneNumber == null)
+            SceneManager.sceneNumber = 0;
+
+        this.sceneCounter = SceneManager.sceneNumber;
+        SceneManager.sceneNumber++;
     }
 
     loadScene(sceneID)
@@ -21,7 +38,8 @@ class SceneManager
             var currentID = this.scenes[i].name;
             if(currentID == sceneID)
             {
-                SceneManager.runningScene = this.scenes[i];
+                this.runningScene = this.scenes[i];
+                Window.instance.resizeCanvaces();
                 return;
             }
         }

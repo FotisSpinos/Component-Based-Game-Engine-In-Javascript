@@ -13,15 +13,21 @@ class Canvas
         this.c = document.createElement('canvas');
         this.c.id = id;
 
-        this.size;
         this.setSize(size);
 
-        var body = document.getElementsByTagName("body")[0];
-        body.appendChild(this.c);
+        this.c.className = "gameCanvas";
+        this.c.style.width = "100%";
+        this.c.style.height = "100%";
 
-        this.c.style.left = "0px";
-        this.c.style.top = "0px";
-        this.c.style.position =  "absolute";
+        //Create game area
+        let canvasContainer = document.createElement("div");
+        canvasContainer.className = "CanvasContainer";
+        canvasContainer.style.position = "absolute";
+        canvasContainer.style.top = "50%";
+        canvasContainer.style.left = "50%";
+
+        document.getElementById("body").appendChild(canvasContainer);
+        canvasContainer.appendChild(this.c);
     }
 
     constructor(id, size, drawObjs)
@@ -45,7 +51,7 @@ class Canvas
         for(var i = 0; i < drawObjs.length; i++)
         {
             drawObjs[i].setCanvas = this;
-        }
+        }          
     }
 
     addDrawObj = function(drawObj)
@@ -61,13 +67,6 @@ class Canvas
         {
             this.drawObjs.splice(elemIndex, 1);
         }
-    }
-
-    print = function()
-    {
-        console.log('Canvas: ' + this.id  + '\n' +
-        'Width: ' + this.c.width + '\n' +
-        'Height: ' + this.c.height + '\n');
     }
 
     clearCanvas = function()
@@ -90,6 +89,22 @@ class Canvas
         for(var i = 0; i < this.drawObjs.length; i++)
         {
             this.drawObjs[i].renderComponents();
+        }
+    }
+
+    onSceneLoad = function()
+    {
+        for(var i = 0; i < this.drawObjs.length; i++)
+        {
+            this.drawObjs[i].onSceneLoad();
+        }
+    }
+
+    onSceneExit = function () 
+    {
+        for(var i = 0; i < this.drawObjs.length; i++)
+        {
+            this.drawObjs[i].onSceneExit();
         }
     }
 }

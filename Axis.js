@@ -48,7 +48,5 @@ class Axis
         
         this.increaseFactor = this.culculateFactor(this.increaseFactor, this.positiveKeyID);
         this.decreaseFactor = this.culculateFactor(this.decreaseFactor, this.negativeKeyID);
-
-        console.log(this.axisValue);
     }
 }
