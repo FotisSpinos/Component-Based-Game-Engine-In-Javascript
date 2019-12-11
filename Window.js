@@ -9,8 +9,6 @@ class Window
             window.addEventListener("resize", this.resizeCanvaces);
     }
 
-    //getInstance
-
     resizeCanvaces()
     {
         let currentScene = SceneManager.instance.runningScene;
@@ -19,16 +17,18 @@ class Window
         if(currentScene != null)
             sceneIndex = currentScene.index;
              
-
-        var gameArea = document.querySelectorAll("body div.CanvasContainer");  //resieved all game areas for each scene
+        //Resieves the canvas container
+        var gameArea = document.querySelectorAll("body div.CanvasContainer");  
 
         var widthToHeight = 16 / 9;
 
+        //Assigns the actual window height
         var newWidth = window.innerWidth;
         var newHeight = window.innerHeight;
 
         var newWidthToHeight = newWidth / newHeight;
 
+        // reculculates the cantainer's dimentions
         if (newWidthToHeight > widthToHeight) 
         {
             newWidth = newHeight * widthToHeight;
