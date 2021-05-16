@@ -130,7 +130,8 @@ class SpriteAnimation
         {
             objPos = objPos.addVec(this.posOffset);
         }
-
+        
+        console.log(this.spriteImg.src)
         ctx.drawImage(this.spriteImg,
             this.spritePos.x, this.spritePos.y, 
             this.spriteScale.x, this.spriteScale.y,

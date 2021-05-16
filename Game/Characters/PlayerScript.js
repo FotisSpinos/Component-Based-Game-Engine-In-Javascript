@@ -43,8 +43,8 @@ class PlayerScript extends Component
     start()
     {
         // define animations image
-        this.charImageAnim = new EngineImage('PC Computer - Heroes of Might and Magic 2 - Mage.png', 'character image animantions');
-        this.charImageAnimFlipped = new EngineImage('PC Computer - Heroes of Might and Magic 2 - Mage - flipped.png', 'character image animantions flipped');
+        this.charImageAnim = new EngineImage(spritesPrefix + 'PC Computer - Heroes of Might and Magic 2 - Mage.png', 'character image animantions');
+        this.charImageAnimFlipped = new EngineImage(spritesPrefix + 'PC Computer - Heroes of Might and Magic 2 - Mage - flipped.png', 'character image animantions flipped');
 
         // create sprite animations
         this.deathSprite = new SpriteAnimation(this.charImageAnim, 

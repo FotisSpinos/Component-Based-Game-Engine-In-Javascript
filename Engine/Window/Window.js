@@ -49,7 +49,5 @@ class Window
         
         if(SceneManager.instance.runningScene == null)
           return;
-        
-        let sceneCanvaces = SceneManager.instance.runningScene.canvaces;
     }
 }

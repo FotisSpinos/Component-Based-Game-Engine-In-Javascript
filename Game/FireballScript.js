@@ -21,9 +21,9 @@ class FireballScript extends Component
         }
 
         if(this.dir == direction.RIGHT)
-            this.fireballAnim = new EngineImage('fireball animation sheet.png', 'fireball image animantion');
+            this.fireballAnim = new EngineImage(spritesPrefix + 'fireball animation sheet.png', 'fireball image animantion');
         else
-            this.fireballAnim = new EngineImage('fireball animation sheet flipped.png', 'fireball image animantion flipped');
+            this.fireballAnim = new EngineImage(spritesPrefix + 'fireball animation sheet flipped.png', 'fireball image animantion flipped');
 
         //* Create and play animation according to direction
         this.fireballFord = new SpriteAnimation(this.fireballAnim, 

@@ -31,8 +31,8 @@ class SkeletonScript extends Component
     start()
     {
         // define animations image
-        this.skeletonImgAnim = new EngineImage('ghost sprite.png', 'character image animantions');
-        this.skeletonImgAnimFlipped = new EngineImage('ghost sprite flipped.png', 'Skeleton spread sheet flipped.png');
+        this.skeletonImgAnim = new EngineImage(spritesPrefix + 'ghost sprite.png', 'character image animantions');
+        this.skeletonImgAnimFlipped = new EngineImage(spritesPrefix + 'ghost sprite flipped.png', 'Skeleton spread sheet flipped.png');
 
         //* create walk animation
         this.walkSpriteFlipped = new SpriteAnimation(this.skeletonImgAnimFlipped, 

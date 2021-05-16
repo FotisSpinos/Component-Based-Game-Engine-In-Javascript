@@ -1,4 +1,8 @@
-let engine;
+let spritesPrefix = './Game/Assets/Sprites/'
+let audioPrefix = './Game/Assets/Audio/'
+
+AudioManager.instance = new AudioManager()
+let engine = new Engine();
 
 function playerInteractionScene()
 {
@@ -19,7 +23,7 @@ function playerInteractionScene()
 
     //* Create Background
     let backgroundGO = new GameObject('interactionChecker', new Vector2D(0, 0),  new Vector2D(1578, 969));
-    let background = new EngineImage("InteractionBackgroundImage.png", 'background');
+    let background = new EngineImage(spritesPrefix + "InteractionBackgroundImage.png", 'background');
 
     backgroundGO.addComponent(background);
     
@@ -56,7 +60,7 @@ function openningScene()
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), 
     openningCanvas.size);
 
-    let backgroundImg = new EngineImage('OpenningSceneBackground.png', 'test');
+    let backgroundImg = new EngineImage(spritesPrefix + 'OpenningSceneBackground.png', 'test');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(18432 / 24, 512), new Vector2D(0, 0), 0.1, 0, [23]);
     backgroundSprite.name = 'backgroundSprite';
 
@@ -69,9 +73,9 @@ function openningScene()
   /************************************************************************************************************************/  
 
     //* Create Button 
-    let playMainGameGO = new GameObject('skeleton', new Vector2D(110, 50), new Vector2D(210, 100));
-    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
-        AudioManager.instance.playAudio("ButtonClick.wav");
+    let playMainGameGO = new GameObject('play button', new Vector2D(110, 50), new Vector2D(210, 100));
+    let playMainGameBtn = new Button(new EngineImage(spritesPrefix + "Play_Button.png", 'play game button'), function() {
+        AudioManager.instance.playAudio(audioPrefix + "ButtonClick.wav");
         Engine.instance.sceneManager.loadScene("Main Scene");
     });
     
@@ -120,7 +124,7 @@ function mainGameScene()
 
     //* Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), mainGameCanvas.size);
-    let backgroundImg = new EngineImage('BackgroundSprite.png', 'test');
+    let backgroundImg = new EngineImage(spritesPrefix + 'BackgroundSprite.png', 'Background');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(1968/3, 752/2), new Vector2D(0, 0), 0.1, 1, [1, 0]);
     backgroundSprite.name = 'backgroundSprite';
 
@@ -174,7 +178,7 @@ function endScene()
 
     // * Create Background
     let backgroundGO = new GameObject('backgroundImg', new Vector2D(0, 0), endSceneCanvas.size);
-    let backgroundImg = new EngineImage('End Scene Background (2).png', 'test');
+    let backgroundImg = new EngineImage(spritesPrefix + 'End Scene Background.png', 'End scene background');
     let backgroundSprite = new SpriteAnimation(backgroundImg, new Vector2D(0, 0), new Vector2D(13500  / 27, 475), new Vector2D(0, 0), 0.1, 0, [26]);
     backgroundSprite.name = 'backgroundSprite';
 
@@ -200,8 +204,8 @@ function endScene()
 
     // *Create play game button
     let playMainGameGO = new GameObject('main game button game object', new Vector2D(110, 50), new Vector2D(210, 100));
-    let playMainGameBtn = new Button(new EngineImage("Play_Button.png", 'play game button'), function() {
-        AudioManager.instance.playAudio("ButtonClick.wav");
+    let playMainGameBtn = new Button(new EngineImage(spritesPrefix + "Play_Button.png", 'play game button'), function() {
+        AudioManager.instance.playAudio(audioPrefix + "ButtonClick.wav");
         SceneManager.instance.loadScene("Openning Scene");
     });
         
@@ -217,16 +221,13 @@ function endScene()
     endSceneCanvas.addDrawObj(sceneInitGo);
 }
 
-
-engine = new Engine();
-
 //* Add sounds
-AudioManager.instance.addAudio(new EngineAudio("background", "Castlevania Symphony of the Night OST Metamorphosis I.mp3", true));
-AudioManager.instance.addAudio(new EngineAudio("fireBall sound", "fireballSpawn.wav", false));
-AudioManager.instance.addAudio(new EngineAudio("ButtonClick.wav", "ButtonClick.wav", false));
-AudioManager.instance.addAudio(new EngineAudio("ghost attack", "Ghost Attack Sound.wav", false));
-AudioManager.instance.addAudio(new EngineAudio("main game background song", "Necropolis - Heroes of Might and Magic IV (4) OST.mp3", true));
-AudioManager.instance.addAudio(new EngineAudio("end scene background song", "Castlevania SOTN Lost Painting.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("background", audioPrefix + "Castlevania Symphony of the Night OST Metamorphosis I.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("fireBall sound", audioPrefix + "fireballSpawn.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ButtonClick.wav", audioPrefix + "ButtonClick.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("ghost attack", audioPrefix + "Ghost Attack Sound.wav", false));
+AudioManager.instance.addAudio(new EngineAudio("main game background song", audioPrefix + "Necropolis - Heroes of Might and Magic IV OST.mp3", true));
+AudioManager.instance.addAudio(new EngineAudio("end scene background song", audioPrefix + "Castlevania SOTN Lost Painting.mp3", true));
 
 let win = new Window();
 
