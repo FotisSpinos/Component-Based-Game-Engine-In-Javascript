@@ -10,7 +10,6 @@ class MainSceneInit extends Component
     {
         let skeleton;
         let skeleton2;
-        let skeleton3;
 
         let player;
         let scoreTextGO;
@@ -25,7 +24,6 @@ class MainSceneInit extends Component
         {
             skeleton = GameObject.find("skeleton");
             skeleton2 = GameObject.find("skeleton2");
-            skeleton3 = GameObject.find("skeleton3");
             player =  GameObject.find("player")
             scoreTextGO = GameObject.find("scoreText");
             scoreValueTextGO = GameObject.find("scoreValueText");
@@ -51,16 +49,6 @@ class MainSceneInit extends Component
         {
             skeleton2.transform.pos = new Vector2D(1300, 633);
             skeleton2.getComponent(SkeletonScript).health = 2;
-        }
-
-        if(skeleton3 == null)
-        {
-            GameMaster.createEnemy('skeleton3', new Vector2D(1600, 633), SceneManager.instance.runningScene.canvaces[0]);
-        }
-        else
-        {
-            skeleton3.transform.pos = new Vector2D(1600, 633);
-            skeleton3.getComponent(SkeletonScript).health = 2;
         }
 
         if(player == null)
